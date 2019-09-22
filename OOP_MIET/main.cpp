@@ -3,6 +3,7 @@
 #include "Food.h"
 #include "FileIO.h"
 #include "InteractDB.h"
+#include "FoodInteract.h"
 
 #include <iostream>
 #include <vector>
@@ -13,9 +14,9 @@ using namespace std;
 
 int main() {
 	//Примеры
-	Database<Mail> db;
+	Mail m(675000, "s", "s", "s", "s", 12.55);
+	Database<Mail> db(15, m);
 	string s = "Sasha";
-	Mail m(675000, "s", "s", "s", "s", float(12.55));
 	db.Add(m);
 
 	//Заполним отличающимеся по цене
@@ -42,10 +43,10 @@ int main() {
 		cout << new_db[i].cost << "\n";
 
 	FileIO files("Database.dat");
-	
 
 	//Работа с InteractDB
 	Database<Food> database = InteractDB::CreateDatabaseWith<FoodInteract, Food>();
+	InteractDB::AddElement<FoodInteract>(db);
 	Food f = InteractDB::FindElement<FoodInteract>(database);
 
 	return 0;
