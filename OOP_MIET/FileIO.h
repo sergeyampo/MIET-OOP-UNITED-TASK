@@ -46,7 +46,7 @@ public:
 	}
 
 	void Create(const std::string& file) {
-		ofstream fout(filename.c_str());
+		std::ofstream fout(filename.c_str());
 		fout.close();
 		if (!std::filesystem::exists(file.c_str()))
 			throw std::domain_error("File with " + file + " name cannot be created!");
