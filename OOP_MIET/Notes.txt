@@ -1,1 +1,2 @@
 1. Удалить static в InteractDB функций.
+2. Добавить Student
