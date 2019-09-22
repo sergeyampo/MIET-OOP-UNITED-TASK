@@ -18,6 +18,7 @@ public:
 	~FileIO() = default;
 	FileIO(const FileIO& file) = default;
 	FileIO(FileIO&& file) = default;
+	explicit FileIO(const std::string& n) : filename(n) { }
 
 	template <class T>
 	T ReadBinary(T& obj, const std::string& file = filename) {
@@ -43,6 +44,16 @@ public:
 
 		fout.write(reinterpret_cast<char*>(&obj), sizeof(obj));
 	}
+
+	void Create(const std::string& file) {
+		ofstream fout(filename.c_str());
+		fout.close();
+		if (!std::filesystem::exists(file.c_str()))
+			throw std::domain_error("File with " + file + " name cannot be created!");
+	}
+
+	std::string GetName() { return filename; }
+	void SetName(const std::string& name) { filename = name; }
 
 	//	string ReadText(const std::string& file = filename);
 	//	void WriteText(const std::string& file = filename);

@@ -41,14 +41,8 @@ int main() {
 	for (size_t i = 0; i < new_db.Size(); ++i)
 		cout << new_db[i].cost << "\n";
 
-	new_db.Add({ 12, "asda", "asdasd", "asdasd", "asd", 12.5 });
-	ofstream fout("file.bin", ios_base::binary | ios_base::out | ios_base::trunc);
-	fout.write(reinterpret_cast<char*>(&new_db), sizeof(new_db));
-	fout.close();
-
-	Database<Mail> mn;
-	ifstream fin("file.bin", ios_base::binary | ios_base::in);
-	fin.read(reinterpret_cast<char*>(&mn), sizeof(Database<Mail>));
+	FileIO files("Database.dat");
+	
 
 	//Работа с InteractDB
 	Database<Food> database = InteractDB::CreateDatabaseWith<FoodInteract, Food>();
