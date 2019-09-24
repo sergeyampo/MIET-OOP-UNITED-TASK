@@ -42,12 +42,13 @@ int main() {
 	for (size_t i = 0; i < new_db.Size(); ++i)
 		cout << new_db[i].cost << "\n";
 
-	FileIO files("Database.dat");
-
 	//Работа с InteractDB
-	Database<Food> database = InteractDB::CreateDatabaseWith<FoodInteract, Food>();
+/*	Database<Food> database = InteractDB::CreateDatabaseWith<FoodInteract, Food>();
 	InteractDB::AddElement<FoodInteract>(db);
-	Food f = InteractDB::FindElement<FoodInteract>(database);
+	Food f = InteractDB::FindElement<FoodInteract>(database);*/
+
+	//Сохраним базу в файл и считаем
+	auto restored_db = InteractDB::RestoreDbWith<Mail>();
 
 	return 0;
 }
