@@ -25,7 +25,7 @@ namespace InteractDB {
 		int amount = CorrectInput::EnterIntNum();
 		for (int i = 0; i < amount; i++)
 		{			
-			cout << "Enter " << i+1 << " element: " << endl;
+			cout << "Enter " << i+1 << " element: " << "\n";
 			AddElement<InteractType>(db);
 		}
 	}
@@ -60,7 +60,7 @@ namespace InteractDB {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
 		if (found.Empty())
-			cout << "Element not found!" << endl;
+			cout << "Element not found!" << "\n";
 
 		return found;
 	}
@@ -100,7 +100,7 @@ namespace InteractDB {
 				rs_db = file.ReadBinary(rs_db, database_dump_namefile);
 			}
 			catch (domain_error e) {
-				cout << e.what() << endl;
+				cout << e.what() << "\n";
 				return RestoreDbWith<ItemType>();
 			}
 		}
@@ -133,7 +133,7 @@ namespace InteractDB {
 				file.WriteBinary(db, database_dump_namefile);
 			}
 			catch (domain_error e) {
-				cout << e.what() << endl;
+				cout << e.what() << "\n";
 				return SaveDb(db);
 			}
 		}

@@ -7,7 +7,6 @@ using namespace std;
 namespace CorrectInput {
 	string EnterSym()
 	{
-
 		string text;
 		while (true)
 		{
@@ -17,7 +16,7 @@ namespace CorrectInput {
 				if (isalpha(*beg) == false)//проверка каждого символа на букву
 					key = 0;
 			if (key == 0)
-				cout << "enter text again" << endl;
+				cout << "enter text again" << "\n";
 			else
 				return text;
 		}
