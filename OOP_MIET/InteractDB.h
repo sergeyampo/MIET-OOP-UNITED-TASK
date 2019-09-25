@@ -9,8 +9,8 @@ namespace InteractDB {
 	//функциями. Добавляет элемент в базу данных.
 	//Вызываем как InteractDB::AddElement<FoodInteract>(db);
 	template <class InteractType, class ItemType>
-	static void AddElement(Database<ItemType>& db) {
-	    //cout something
+	void AddElement(Database<ItemType>& db) {
+		//cout something
 		ItemType item = InteractType::InputData();
 		db.Add(item);
 	}
@@ -18,21 +18,29 @@ namespace InteractDB {
 	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
 	//функциями. Добавляет несколько элементов в базу данных. 
 	template <class InteractType, class ItemType>
-	static void AddFewElements(Database<ItemType>& db) {
-		unsigned int count = 0;
+	void AddFewElements(Database<ItemType>& db) {
 		cout << "Enter amount of elements, which you want to create\n"
 			"or type 0 if you don't: ";
-		int amount = CorrectInput::CorrectInput::EnterIntNum();
-
+		int amount = CorrectInput::EnterIntNum();
 		for (int i = 0; i < amount; i++)
+			cout << "Enter " << i++ << " element" << endl;
 			AddElement<InteractType>(db);
 	}
+
+	//Функция получает базу данных и выводит его в виде таблицы
+	template <class InteractType, class ItemType>
+	void PrintTable(Database<ItemType>& db) {
+		for (int i = 0; i < db.Size(); ++i)
+			InteractType::OutputData(db[i]);
+    }
+	
+
 
 	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
 	//Диалог создания базы данных.
 	//Вызываем как CreateDatabaseWith<FoodInteract, Food>()
 	template <class InteractType, class ItemType>
-	static Database<ItemType> CreateDatabaseWith() {
+	Database<ItemType> CreateDatabaseWith() {
 		cout << "Enter the size of DataBase: ";
 		int k = 0;
 		k = CorrectInput::EnterIntNum();
@@ -45,10 +53,10 @@ namespace InteractDB {
 
 	//Диалог поиска элементов
 	template <class InteractType, class ItemType>
-	static ItemType FindElement(Database<ItemType>& db) {
+	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
-		if (found.empty())
+		if (found.Empty())
 			cout << "Element not found!" << endl;
 
 		return found;
@@ -57,7 +65,7 @@ namespace InteractDB {
 	//Диалог фильтра элементов - возвращаемый базу данных элементы которых
 	//удовлетворяют предикату InteractType::GetFilterCritery.
 	template <class InteractType, class ItemType>
-	static Database<ItemType> FilterElements(const Database<ItemType>& db) {
+	Database<ItemType> FilterElements(const Database<ItemType>& db) {
 		auto predic = InteractType::GetFilterCritery();
 		Database<ItemType> new_db = db.Filter(predic);
 
@@ -66,106 +74,78 @@ namespace InteractDB {
 
 	//Диалог сортировки элементов, меняет порядок элементов переданной базы данных.
 	template <class InteractType, class ItemType>
-	static void SortElements(Database<ItemType>& db) {
+	void SortElements(Database<ItemType>& db) {
 		auto predic = FoodInteract::GetSortCritery();
 		db.Sort(predic);
 	}
-};
 
+	//Диалог восстановления базы данных из предыдущего сохранения, файла с именем
+	//database_dump_namefile. Вызываем RestoreDbWith<Food>()
+	template <class ItemType>
+	Database<ItemType> RestoreDbWith() {
+		const std::string database_dump_namefile = "Database.cereal";
+		cout << "Do you want to restore data from the last save?\n"
+			    "\'Y\' - yes, \'N\' - no\n"
+			    "Enter: ";
+		char choice;
+		cin >> choice;
+		
+		Database<ItemType> rs_db;
+		if (choice == 'Y') {
+			try {
+				FileIO file(database_dump_namefile);
+				rs_db = file.ReadBinary(rs_db, database_dump_namefile);
+			}
+			catch (domain_error e) {
+				cout << e.what() << endl;
+				return RestoreDbWith<ItemType>();
+			}
+		}
+		else if (choice == 'N') {
+			return Database<ItemType>();
+		}
+		else {
+			ClearCin(cin);
+			cout << "Incorrect input, try again!\n";
+			return RestoreDbWith<ItemType>();
+		}
 
-//Пользовательский класс взаимодействий и диалогов
-class FoodInteract {
-public:
-	FoodInteract() = delete;
-	~FoodInteract() = delete;
-
-	//Общая функция ввода всех полей
-
-	static Food InputData() {
-		Food Buffer;
-		cout << "enter fam" << endl;
-		Buffer.fam = CorrectInput::EnterSym();
-		cout << "enter type" << endl;
-		Buffer.type = CorrectInput::EnterIntNum();
-		cout << "enter wight" << endl;
-		Buffer.weight = CorrectInput::EnterDoubleNum();
-		cout << "enter count" << endl;
-		Buffer.count = CorrectInput::EnterIntNum();
-		cout << "enter cost" << endl;
-		Buffer.cost = CorrectInput::EnterDoubleNum();
-		return Buffer;
-		//Вызываем InputIndex(), InputRecAdress() ...
-		//Если вернули false значит всё плохо вызываем их ещё раз
-		//Чистим поток и говорим пользователю ввести ещё раз
-
+		return rs_db;
 	}
 
+	//Диалог сохранения базы данных в файл с именем
+	//database_dump_namefile.
+	template <class ItemType>
+	void SaveDb(const Database<ItemType>& db) {
+		const std::string database_dump_namefile = "Database.cereal";
+		cout << "Do you want to save data to file?\n"
+			"\'Y\' - yes, \'N\' - no\n"
+			"Enter: ";
+		char choice;
+		cin >> choice;
 
-	static auto GetFindCritery() {
-
-		string buffer = CorrectInput::EnterSym();
-		return [buffer](Food m) { return m.fam == buffer; };
-
-		//если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFindCritery();
-	}
-
-
-	static auto GetFilterCritery() {
-
-		unsigned int buffer = CorrectInput::EnterIntNum();
-		return [buffer](Food m) { return m.type == buffer; };
-
-		//Просим выбрать критерий фильтра и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите фильтровать, по имени
-		//По индексу"
-		//Если например по имени делаем
-	   //return [](Food m) { return m.name == "введённое имя пользователем" };
-	   //если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFilterCritery();
-	   //Всё аналогично
-	}
-	template <class Func>
-	static void GetSortCritery() {
-		cout << "enter critery of search:" << endl << "1-fam" << endl << "2-type" << endl << "3-wight" << endl << "4-count" << endl << "5-cost" << endl;
-		unsigned int k = 0;
-		cin >> k;
-		if (k == 1)
-		{
-			string buffer = CorrectInput::EnterSym();
-			return [buffer](Food m, Food n) { return m.fam < n.fam; };
+		if (choice == 'Y') {
+			try {
+				FileIO file(database_dump_namefile);
+				file.WriteBinary(db, database_dump_namefile);
+			}
+			catch (domain_error e) {
+				cout << e.what() << endl;
+				return SaveDb(db);
+			}
 		}
-		if (k == 2)
-		{
-			unsigned int buffer = CorrectInput::EnterIntNum();
-			return [buffer](Food m, Food n) { return m.type < n.type; };
+		else if (choice == 'N') {
+			return;
 		}
-		if (k == 3)
-		{
-			double buffer = CorrectInput::EnterDoubleNum();
-			return [buffer](Food m, Food n) { return m.wight < n.wight; };
+		else {
+			ClearCin(cin);
+			cout << "Incorrect input, try again!\n";
+			return SaveDb(db);
 		}
-		if (k == 4)
-		{
-			double buffer = CorrectInput::EnterIntNum();
-			return [buffer](Food m, Food n) { return m.count < n.wight; };
-		}
-		if (k == 5)
-		{
-			double buffer = CorrectInput::EnterDoubleNum();
-			return [buffer](Food m, Food n) { return m.cost < n.cost; };
-		}
-		else
-		{
-			GetSortCritery();
-		}
-
 	}
 
 };
+
+
+
 
