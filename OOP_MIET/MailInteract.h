@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include "Mail.h"
@@ -11,69 +13,49 @@ public:
 	//Общая функция ввода всех полей
 	static Mail InputData() {
 		Mail Buffer;
-		cout << "enter index" << endl;
-		Buffer.index = EnterIntNum();
-		cout << "enter reciver_adresss" << endl;
-		Buffer.reciever_adress = EnterSym();
-		cout << "enter reciver_name" << endl;
-		Buffer.reciever_name = EnterSym();
-		cout << "enter sender_adresss" << endl;
-		Buffer.sender_adress = EnterSym();
-		cout << "enter sender_name" << endl;
-		Buffer.sender_name = EnterSym();
-		cout << "enter cost" << endl;
-		Buffer.cost = EnterDoubleNum();
+		string input;
+		cout << "Enter index: ";
+		Buffer.index = CorrectInput::EnterIntNum();
+		ClearCin(cin);
+		cout << "Enter reciver_adresss: ";
+		getline(cin, Buffer.reciever_adress);
+		ClearCin(cin);
+		cout << "Enter reciver_name: ";
+		Buffer.reciever_name = CorrectInput::EnterSym();
+		ClearCin(cin);
+		cout << "Enter sender_adresss: ";
+		getline(cin, Buffer.sender_adress);
+		ClearCin(cin);
+		cout << "Enter sender_name: ";
+		Buffer.sender_name = CorrectInput::EnterSym();
+		ClearCin(cin);
+		cout << "Enter cost: ";
+		Buffer.cost = CorrectInput::EnterDoubleNum();
+		ClearCin(cin);
+		
 		return Buffer;
-		//Вызываем InputIndex(), InputRecAdress() ...
-		//Если вернули false значит всё плохо вызываем их ещё раз
-		//Чистим поток и говорим пользователю ввести ещё раз
-		//То есть вызываем саму себя return InputData();
 	}
 
-	template <class Func>
-	static Func GetFindCritery() {
-		string buffer = EnterSym();
-		return [](Mail m) { return m.sender_adress == buffer; };
-		//Просим выбрать критерий поиска и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите искать, по имени
-		//По индексу"
-		//Если например по имени делаем
-		//return [](Mail m) { return m.name == "введённое имя пользователем" };
-		//если по индексу то return [](Mail m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFindCritery();
+	static auto GetFindCritery() {
+		cout << "Type the sender adress to find: ";
+		string buffer = CorrectInput::EnterSym();;
+		return [&buffer](Mail m) { return m.sender_name == buffer; };
 	}
 
-	template <class Func>
-	static Func GetFilterCritery() {
-		unsigned int buffer = EnterIntNum();
-		return [](Mail m) { return m.index == buffer; };
-		//Просим выбрать критерий фильтра и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите фильтровать, по имени
-		//По индексу"
-		//Если например по имени делаем
-		//return [](Mail m) { return m.name == "введённое имя пользователем" };
-		//если по индексу то return [](Mail m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFilterCritery();
-	   //Всё аналогично
+	static auto GetFilterCritery() {
+		cout << "Type the index for filtering: ";;
+		unsigned int buffer = CorrectInput::EnterIntNum();
+		return [&buffer](Mail m) { return m.index == buffer; };
 	}
-	template <class Func>
-	static void GetSortCritery() {
-		return [](Mail x, Mail y) { return x.reciever_name < y.reciever_name; }
-			//Всё тоже самое
+
+	static auto GetSortCritery() {
+		cout << "Sorting by increasing cost.\n";
+		return [](Mail x, Mail y) { return x.cost < y.cost; };
+	}
+
+	static void OutputData(Mail buffer) {
+		cout << buffer.index << "\t" << buffer.reciever_adress << "\t" << buffer.reciever_name << "\t" << buffer.sender_adress << "\t" << buffer.sender_name << "\t" << buffer.cost;
 	}
 };
-
-//Как вызывать, это всё в main.
-Database<Mail> db;
-InteractDB::AddElement(db);
-Database<Mail> new_db = InteractDB::FilterElements(db);
-Mail found = InteractDB::FindElement(new_db);
-InteractDB::SortElements(new_db);
 
 

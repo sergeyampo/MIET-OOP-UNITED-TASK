@@ -1,13 +1,15 @@
 #pragma once
 #include "Database.h"
 #include "CorrectInput.h"
+#include "MailInteract.h"
 #include <iostream>
+#include "FoodInteract.h"
 
-//Универсальный интерфейс работы с базой данных
+//Г“Г­ГЁГўГҐГ°Г±Г Г«ГјГ­Г»Г© ГЁГ­ГІГҐГ°ГґГҐГ©Г± Г°Г ГЎГ®ГІГ» Г± ГЎГ Г§Г®Г© Г¤Г Г­Г­Г»Гµ
 namespace InteractDB {
-	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
-	//функциями. Добавляет элемент в базу данных.
-	//Вызываем как InteractDB::AddElement<FoodInteract>(db);
+	//Г”ГіГ­ГЄГ¶ГЁГї ГЇГ®Г«ГіГ·Г ГҐГІ ГЎГ Г§Гі Г¤Г Г­Г­Г»Гµ ГЁ ГІГ®Г·Г­Г»Г© ГёГ ГЎГ«Г®Г­Г­Г»Г© ГЇГ Г°Г Г¬ГҐГІГ° Г± ГіГІГ®Г·Г­ВёГ­Г­Г»Г¬ГЁ Г¤ГЁГ Г«Г®ГЈГ®ГўГ»Г¬ГЁ
+	//ГґГіГ­ГЄГ¶ГЁГїГ¬ГЁ. Г„Г®ГЎГ ГўГ«ГїГҐГІ ГЅГ«ГҐГ¬ГҐГ­ГІ Гў ГЎГ Г§Гі Г¤Г Г­Г­Г»Гµ.
+	//Г‚Г»Г§Г»ГўГ ГҐГ¬ ГЄГ ГЄ InteractDB::AddElement<FoodInteract>(db);
 	template <class InteractType, class ItemType>
 	void AddElement(Database<ItemType>& db) {
 		//cout something
@@ -15,22 +17,32 @@ namespace InteractDB {
 		db.Add(item);
 	}
 
-	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
-	//функциями. Добавляет несколько элементов в базу данных. 
+	//Г”ГіГ­ГЄГ¶ГЁГї ГЇГ®Г«ГіГ·Г ГҐГІ ГЎГ Г§Гі Г¤Г Г­Г­Г»Гµ ГЁ ГІГ®Г·Г­Г»Г© ГёГ ГЎГ«Г®Г­Г­Г»Г© ГЇГ Г°Г Г¬ГҐГІГ° Г± ГіГІГ®Г·Г­ВёГ­Г­Г»Г¬ГЁ Г¤ГЁГ Г«Г®ГЈГ®ГўГ»Г¬ГЁ
+	//ГґГіГ­ГЄГ¶ГЁГїГ¬ГЁ. Г„Г®ГЎГ ГўГ«ГїГҐГІ Г­ГҐГ±ГЄГ®Г«ГјГЄГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў ГЎГ Г§Гі Г¤Г Г­Г­Г»Гµ. 
 	template <class InteractType, class ItemType>
 	void AddFewElements(Database<ItemType>& db) {
-		unsigned int count = 0;
-		cout << "Enter amount of elements, which you want to create\n"
-			"or type 0 if you don't: ";
+		cout << "Enter amount of elements, which you want to create\n
+			"or type 0 if you don't:\n";
 		int amount = CorrectInput::EnterIntNum();
-
 		for (int i = 0; i < amount; i++)
+		{			
+			cout << "Enter " << i+1 << " element: " << "\n";
 			AddElement<InteractType>(db);
+		}
 	}
 
-	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
-	//Диалог создания базы данных.
-	//Вызываем как CreateDatabaseWith<FoodInteract, Food>()
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	template <class InteractType, class ItemType>
+	void PrintTable(Database<ItemType>& db) {
+		for (int i = 0; i < db.Size(); ++i)
+			InteractType::OutputData(db[i]);
+    }
+	
+
+
+	//Г”ГіГ­ГЄГ¶ГЁГї ГЇГ®Г«ГіГ·Г ГҐГІ Г·ГҐГ°ГҐГ§ ГїГўГ­Г»ГҐ ГёГ ГЎГ«Г®Г­Г­Г»ГҐ Г Г°ГЈГіГ¬ГҐГ­ГІГ» ГЄГ«Г Г±Г± ГўГ§Г ГЁГ¬Г®Г¤ГҐГ©Г±ГІГўГЁГї b ГІГЁГЇ ГµГ°Г Г­ГЁГ¬Г»Г© Гў ГЎГ Г§ГҐ Г¤Г Г­Г­Г»Гµ
+	//Г„ГЁГ Г«Г®ГЈ Г±Г®Г§Г¤Г Г­ГЁГї ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ.
+	//Г‚Г»Г§Г»ГўГ ГҐГ¬ ГЄГ ГЄ CreateDatabaseWith<FoodInteract, Food>()
 	template <class InteractType, class ItemType>
 	Database<ItemType> CreateDatabaseWith() {
 		cout << "Enter the size of DataBase: ";
@@ -43,36 +55,38 @@ namespace InteractDB {
 		return db;
 	}
 
-	//Диалог поиска элементов
+	//Г„ГЁГ Г«Г®ГЈ ГЇГ®ГЁГ±ГЄГ  ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
 	template <class InteractType, class ItemType>
 	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
-		if (found.empty())
-			cout << "Element not found!" << endl;
+		if (found.Empty())
+			cout << "Element not found!\n";
 
 		return found;
 	}
 
-	//Диалог фильтра элементов - возвращаемый базу данных элементы которых
-	//удовлетворяют предикату InteractType::GetFilterCritery.
+	//Г„ГЁГ Г«Г®ГЈ ГґГЁГ«ГјГІГ°Г  ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў - ГўГ®Г§ГўГ°Г Г№Г ГҐГ¬Г»Г© ГЎГ Г§Гі Г¤Г Г­Г­Г»Гµ ГЅГ«ГҐГ¬ГҐГ­ГІГ» ГЄГ®ГІГ®Г°Г»Гµ
+	//ГіГ¤Г®ГўГ«ГҐГІГўГ®Г°ГїГѕГІ ГЇГ°ГҐГ¤ГЁГЄГ ГІГі InteractType::GetFilterCritery.
 	template <class InteractType, class ItemType>
-	Database<ItemType> FilterElements(const Database<ItemType>& db) {
+	Database<ItemType> FilterElements(Database<ItemType>& db) {
 		auto predic = InteractType::GetFilterCritery();
 		Database<ItemType> new_db = db.Filter(predic);
+		if(new_db.Empty())
+			cout << "There's nothing to filter!\n";
 
 		return new_db;
 	}
 
-	//Диалог сортировки элементов, меняет порядок элементов переданной базы данных.
+	//Г„ГЁГ Г«Г®ГЈ Г±Г®Г°ГІГЁГ°Г®ГўГЄГЁ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў, Г¬ГҐГ­ГїГҐГІ ГЇГ®Г°ГїГ¤Г®ГЄ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў ГЇГҐГ°ГҐГ¤Г Г­Г­Г®Г© ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ.
 	template <class InteractType, class ItemType>
 	void SortElements(Database<ItemType>& db) {
-		auto predic = FoodInteract::GetSortCritery();
+		auto predic = InteractType::GetSortCritery();
 		db.Sort(predic);
 	}
 
-	//Диалог восстановления базы данных из предыдущего сохранения, файла с именем
-	//database_dump_namefile. Вызываем RestoreDbWith<Food>()
+	//Г„ГЁГ Г«Г®ГЈ ГўГ®Г±Г±ГІГ Г­Г®ГўГ«ГҐГ­ГЁГї ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ ГЁГ§ ГЇГ°ГҐГ¤Г»Г¤ГіГ№ГҐГЈГ® Г±Г®ГµГ°Г Г­ГҐГ­ГЁГї, ГґГ Г©Г«Г  Г± ГЁГ¬ГҐГ­ГҐГ¬
+	//database_dump_namefile. Г‚Г»Г§Г»ГўГ ГҐГ¬ RestoreDbWith<Food>()
 	template <class ItemType>
 	Database<ItemType> RestoreDbWith() {
 		const std::string database_dump_namefile = "Database.cereal";
@@ -89,7 +103,7 @@ namespace InteractDB {
 				rs_db = file.ReadBinary(rs_db, database_dump_namefile);
 			}
 			catch (domain_error e) {
-				cout << e.what() << endl;
+				cout << e.what() << "\n";
 				return RestoreDbWith<ItemType>();
 			}
 		}
@@ -105,7 +119,7 @@ namespace InteractDB {
 		return rs_db;
 	}
 
-	//Диалог сохранения базы данных в файл с именем
+	//Г„ГЁГ Г«Г®ГЈ Г±Г®ГµГ°Г Г­ГҐГ­ГЁГї ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ Гў ГґГ Г©Г« Г± ГЁГ¬ГҐГ­ГҐГ¬
 	//database_dump_namefile.
 	template <class ItemType>
 	void SaveDb(const Database<ItemType>& db) {
@@ -122,7 +136,7 @@ namespace InteractDB {
 				file.WriteBinary(db, database_dump_namefile);
 			}
 			catch (domain_error e) {
-				cout << e.what() << endl;
+				cout << e.what() << "\n";
 				return SaveDb(db);
 			}
 		}
@@ -133,6 +147,15 @@ namespace InteractDB {
 			ClearCin(cin);
 			cout << "Incorrect input, try again!\n";
 			return SaveDb(db);
+		}
+	}
+	
+	//Г”ГіГ­ГЄГ¶ГЁГї ГЇГ®Г«ГіГ·Г ГҐГІ ГЎГ Г§Гі Г¤Г Г­Г­Г»Гµ ГЁ ГўГ»ГўГ®Г¤ГЁГІ ГҐВё Гў ГўГЁГ¤ГҐ ГІГ ГЎГ«ГЁГ¶Г»
+	template <class InteractType, class ItemType>
+	void PrintTable(Database<ItemType>& db) {
+		for (int i = 0; i < db.Size(); ++i) {
+			InteractType::OutputData(db[i]);
+			cout << "\n";
 		}
 	}
 
