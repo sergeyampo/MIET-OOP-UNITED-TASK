@@ -15,7 +15,7 @@ public:
 		Student Buffer;
 		std::cout << "Enter surname " << std::endl;
 
-
+		//Cделать ввод на той же строке, где выводится просьба о вводе.
 
 
 
