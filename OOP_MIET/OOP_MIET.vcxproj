@@ -22,7 +22,6 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D7DBE455-2659-4A3D-84A6-A3EA72A56A63}</ProjectGuid>
     <RootNamespace>OOPMIET</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -87,6 +86,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>false</EnableModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,6 +127,10 @@
     <ClInclude Include="Food.h" />
     <ClInclude Include="InteractDB.h" />
     <ClInclude Include="Mail.h" />
+    <ClInclude Include="MailInteract.h" />
+    <ClInclude Include="NewCorrectInput.h" />
+    <ClInclude Include="Student.h" />
+    <ClInclude Include="StudentInteract.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt" />
