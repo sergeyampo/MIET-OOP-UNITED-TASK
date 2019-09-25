@@ -5,15 +5,12 @@
 using namespace std;
 
 namespace CorrectInput {
-	string EnterSym()
-	{
-
+	string EnterSym(){
 		string text;
-		while (true)
-		{
+		while (true){
 			bool key = 1;
 			cin >> text;
-			for (string::iterator beg = text.begin(); beg != text.end(); beg++)
+			for (string::const_iterator beg = text.cbegin(); beg != text.cend(); ++beg)
 				if (isalpha(*beg) == false)//проверка каждого символа на букву
 					key = 0;
 			if (key == 0)
@@ -21,6 +18,7 @@ namespace CorrectInput {
 			else
 				return text;
 		}
+		return text;
 
 	}
 
