@@ -58,6 +58,7 @@ bool IsWords(std::string str) {
 	*/
 
 int EnterInt() {
+	ClearCin(std::cin);
 	std::string text;
 	std::cin >> text;
 	if (IsDigits(text))
@@ -70,6 +71,7 @@ int EnterInt() {
 }
 
 double EnterDouble() {
+	ClearCin(std::cin);
 	std::string text;
 	std::cin >> text;
 	if (IsRealNum(text))
@@ -82,6 +84,7 @@ double EnterDouble() {
 }
 
 std::string EnterLetters() {
+	ClearCin(std::cin);
 	std::string text;
 	std::cin >> text;
 	if (IsLetters(text))
@@ -94,6 +97,7 @@ std::string EnterLetters() {
 }
 
 std::string EnterWords() {
+	ClearCin(std::cin);
 	std::string text;
 	std::cin >> text;
 	if (IsWords(text))
