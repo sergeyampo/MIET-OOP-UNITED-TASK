@@ -42,7 +42,7 @@
     <ClInclude Include="StudentInteract.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\NewCorrectInput.h">
+    <ClInclude Include="NewCorrectInput.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

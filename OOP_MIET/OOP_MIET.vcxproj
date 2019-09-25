@@ -121,7 +121,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\NewCorrectInput.h" />
     <ClInclude Include="CorrectInput.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="FileIO.h" />
@@ -129,6 +128,7 @@
     <ClInclude Include="InteractDB.h" />
     <ClInclude Include="Mail.h" />
     <ClInclude Include="MailInteract.h" />
+    <ClInclude Include="NewCorrectInput.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="StudentInteract.h" />
   </ItemGroup>
