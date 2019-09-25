@@ -22,7 +22,8 @@ namespace InteractDB {
 	void AddFewElements(Database<ItemType>& db) {
 		unsigned int count = 0;
 		cout << "Enter amount of elements, which you want to create\n"
-			"or type 0 if you don't:\n";
+			"or type 0 if you don't:\n" <<
+			"Enter: ";
 		int amount = CorrectInput::EnterIntNum();
 
 		for (int i = 0; i < amount; i++)
