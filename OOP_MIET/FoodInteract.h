@@ -31,6 +31,10 @@ public:
 		//Чистим поток и говорим пользователю ввести ещё раз
 
 	}
+	
+	static void OutputData(Food Buffer){
+		cout << Buffer.fam << "\t" << Buffer.type << "\t" << Buffer.weight << "\t" << Buffer.count <<"\t"<<Buffer.cost <<"\t" << endl;;
+	}
 
 
 	static auto GetFindCritery() {
