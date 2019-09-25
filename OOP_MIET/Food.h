@@ -12,6 +12,11 @@ struct Food {
 	unsigned int count;
 	double cost;
 
-	bool Empty() { return fam.empty() && type == 0 && weight == 0 && count == 0 && cost == 0.00; }
+	bool Empty() { return fam=="" && type == 0 && weight == 0 && count == 0 && cost == 0.00; }
+	//Сериализация
+	template<class Archive>
+	void serialize(Archive & archive) {
+		archive(fam, type, weight, count, cost);
+	}
 };
 
