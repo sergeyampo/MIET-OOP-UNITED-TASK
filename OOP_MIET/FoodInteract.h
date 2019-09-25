@@ -15,15 +15,15 @@ public:
 
 	static Food InputData() {
 		Food Buffer;
-		std::cout << "enter fam" << std::endl;
+		std::cout << "enter fam" << std::"\n";
 		Buffer.fam = CorrectInput::EnterSym();
-		std::cout << "enter type" << std::endl;
+		std::cout << "enter type" << std::"\n";
 		Buffer.type = CorrectInput::EnterIntNum();
-		std::cout << "enter wight" << std::endl;
+		std::cout << "enter wight" << std::"\n";
 		Buffer.weight = CorrectInput::EnterDoubleNum();
-		std::cout << "enter count" << std::endl;
+		std::cout << "enter count" << std::"\n";
 		Buffer.count = CorrectInput::EnterIntNum();
-		std::cout << "enter cost" << std::endl;
+		std::cout << "enter cost" << std::"\n";
 		Buffer.cost = CorrectInput::EnterDoubleNum();
 		return Buffer;
 		//Âûחûגאול InputIndex(), InputRecAdress() ...
@@ -33,7 +33,7 @@ public:
 	}
 	
 	static void OutputData(Food Buffer){
-		cout << Buffer.fam << "\t" << Buffer.type << "\t" << Buffer.weight << "\t" << Buffer.count <<"\t"<<Buffer.cost <<"\t" << endl;;
+		cout << Buffer.fam << "\t" << Buffer.type << "\t" << Buffer.weight << "\t" << Buffer.count <<"\t"<<Buffer.cost <<"\t" << "\n";;
 	}
 
 
@@ -68,7 +68,7 @@ public:
 	}
 	template <class Func>
 	static void GetSortCritery() {
-		std::cout << "enter critery of search:" << std::endl << "1-fam" << std::endl << "2-type" << std::endl << "3-wight" << std::endl << "4-count" << std::endl << "5-cost" << std::endl;
+		std::cout << "enter critery of search:" << std::"\n" << "1-fam" << std::"\n" << "2-type" << std::"\n" << "3-wight" << std::"\n" << "4-count" << std::"\n" << "5-cost" << std::"\n";
 		unsigned int k = 0;
 		cin >> k;
 		if (k == 1)
