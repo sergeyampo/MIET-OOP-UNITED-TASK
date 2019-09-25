@@ -19,14 +19,20 @@ namespace InteractDB {
 	//функциями. Добавляет несколько элементов в базу данных. 
 	template <class InteractType, class ItemType>
 	void AddFewElements(Database<ItemType>& db) {
-		unsigned int count = 0;
 		cout << "Enter amount of elements, which you want to create\n"
 			"or type 0 if you don't: ";
 		int amount = CorrectInput::EnterIntNum();
-
 		for (int i = 0; i < amount; i++)
 			AddElement<InteractType>(db);
 	}
+
+
+	//template <class InteractType, class ItemType>
+	//void OutputTableDB(Database<ItemType>& db) {
+		//for (int i=0 )
+
+	//}
+
 
 	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
 	//Диалог создания базы данных.
@@ -48,7 +54,7 @@ namespace InteractDB {
 	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
-		if (found.empty())
+		if (found.Empty())
 			cout << "Element not found!" << endl;
 
 		return found;
