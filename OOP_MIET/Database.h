@@ -1,5 +1,6 @@
 #pragma once
 #include "Mail.h"
+#include "FileIO.h"
 #include <vector>
 #include <algorithm>
 
@@ -49,6 +50,11 @@ public:
 	size_t Size() { return data.size(); }
 	bool Empty() { return data.empty(); }
 
+	//Функция сериализации
+	template<class Archive>
+	void serialize(Archive & archive) {
+		archive(data);
+	}
 
 private:
 	std::vector<ItemType> data;
