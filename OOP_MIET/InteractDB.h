@@ -26,12 +26,13 @@ namespace InteractDB {
 			AddElement<InteractType>(db);
 	}
 
-
-	//template <class InteractType, class ItemType>
-	//void OutputTableDB(Database<ItemType>& db) {
-		//for (int i=0 )
-
-	//}
+	//Функция получает базу данных и выводит его в виде таблицы
+	template <class InteractType, class ItemType>
+	void PrintTable(Database<ItemType>& db) {
+		for (int i = 0; i < db.Size(); ++i)
+			InteractType::OutputData(db[i]);
+    }
+	
 
 
 	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
