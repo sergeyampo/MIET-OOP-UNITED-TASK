@@ -33,7 +33,7 @@ public:
 	template <class Func>
 	Database<ItemType> Filter(Func Criterion) {
 		Database<ItemType> new_data;
-		std::for_each(begin(data), end(data), [&new_data, Criterion](const ItemType& it) { if (Criterion(it)) new_data.Add(it);  });
+		std::for_each(begin(data), end(data), [&new_data, &Criterion](const ItemType& it) { if (Criterion(it)) new_data.Add(it);  });
 
 		return new_data;
 	}
