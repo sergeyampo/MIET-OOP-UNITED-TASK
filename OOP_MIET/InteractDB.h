@@ -23,6 +23,7 @@ namespace InteractDB {
 			"or type 0 if you don't: ";
 		int amount = CorrectInput::EnterIntNum();
 		for (int i = 0; i < amount; i++)
+			cout << "Enter " << i++ << " element" << endl;
 			AddElement<InteractType>(db);
 	}
 
