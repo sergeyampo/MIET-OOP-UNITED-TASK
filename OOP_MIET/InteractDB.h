@@ -22,7 +22,7 @@ namespace InteractDB {
 	void AddFewElements(Database<ItemType>& db) {
 		unsigned int count = 0;
 		cout << "Enter amount of elements, which you want to create\n"
-			"or type 0 if you don't: ";
+			"or type 0 if you don't:\n";
 		int amount = CorrectInput::EnterIntNum();
 
 		for (int i = 0; i < amount; i++)
@@ -58,9 +58,11 @@ namespace InteractDB {
 	//ƒиалог фильтра элементов - возвращаемый базу данных элементы которых
 	//удовлетвор€ют предикату InteractType::GetFilterCritery.
 	template <class InteractType, class ItemType>
-	Database<ItemType> FilterElements(const Database<ItemType>& db) {
+	Database<ItemType> FilterElements(Database<ItemType>& db) {
 		auto predic = InteractType::GetFilterCritery();
 		Database<ItemType> new_db = db.Filter(predic);
+		if(new_db.Empty())
+			cout << "There's nothing to filter!\n";
 
 		return new_db;
 	}
@@ -134,6 +136,15 @@ namespace InteractDB {
 			ClearCin(cin);
 			cout << "Incorrect input, try again!\n";
 			return SaveDb(db);
+		}
+	}
+	
+	//‘ункци€ получает базу данных и выводит еЄ в виде таблицы
+	template <class InteractType, class ItemType>
+	void PrintTable(Database<ItemType>& db) {
+		for (int i = 0; i < db.Size(); ++i) {
+			InteractType::OutputData(db[i]);
+			cout << "\n";
 		}
 	}
 
