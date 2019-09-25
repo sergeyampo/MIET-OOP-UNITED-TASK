@@ -1,6 +1,7 @@
 #pragma once
 #include "Database.h"
 #include "CorrectInput.h"
+#include "MailInteract.h"
 #include <iostream>
 
 //Универсальный интерфейс работы с базой данных
@@ -48,8 +49,8 @@ namespace InteractDB {
 	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
-		if (found.empty())
-			cout << "Element not found!" << endl;
+		if (found.Empty())
+			cout << "Element not found!\n";
 
 		return found;
 	}
@@ -67,7 +68,7 @@ namespace InteractDB {
 	//Диалог сортировки элементов, меняет порядок элементов переданной базы данных.
 	template <class InteractType, class ItemType>
 	void SortElements(Database<ItemType>& db) {
-		auto predic = FoodInteract::GetSortCritery();
+		auto predic = InteractType::GetSortCritery();
 		db.Sort(predic);
 	}
 

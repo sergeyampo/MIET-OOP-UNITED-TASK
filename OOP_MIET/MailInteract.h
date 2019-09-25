@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include "Mail.h"
@@ -12,17 +14,17 @@ public:
 	static Mail InputData() {
 		Mail Buffer;
 		cout << "enter index" << endl;
-		Buffer.index = EnterIntNum();
+		Buffer.index = CorrectInput::EnterIntNum();
 		cout << "enter reciver_adresss" << endl;
-		Buffer.reciever_adress = EnterSym();
+		Buffer.reciever_adress = CorrectInput::EnterSym();
 		cout << "enter reciver_name" << endl;
-		Buffer.reciever_name = EnterSym();
+		Buffer.reciever_name = CorrectInput::EnterSym();
 		cout << "enter sender_adresss" << endl;
-		Buffer.sender_adress = EnterSym();
+		Buffer.sender_adress = CorrectInput::EnterSym();
 		cout << "enter sender_name" << endl;
-		Buffer.sender_name = EnterSym();
+		Buffer.sender_name = CorrectInput::EnterSym();
 		cout << "enter cost" << endl;
-		Buffer.cost = EnterDoubleNum();
+		Buffer.cost = CorrectInput::EnterDoubleNum();
 		return Buffer;
 		//Вызываем InputIndex(), InputRecAdress() ...
 		//Если вернули false значит всё плохо вызываем их ещё раз
@@ -30,10 +32,9 @@ public:
 		//То есть вызываем саму себя return InputData();
 	}
 
-	template <class Func>
-	static Func GetFindCritery() {
-		string buffer = EnterSym();
-		return [](Mail m) { return m.sender_adress == buffer; };
+	static auto GetFindCritery() {
+		string buffer = CorrectInput::EnterSym();
+		return [&buffer](Mail m) { return m.sender_adress == buffer; };
 		//Просим выбрать критерий поиска и возвращаем
 		//лямбда функцию - предикат.
 		//"Выберите как вы хотите искать, по имени
@@ -46,10 +47,9 @@ public:
 	   //То есть вызываем саму себя return GetFindCritery();
 	}
 
-	template <class Func>
-	static Func GetFilterCritery() {
-		unsigned int buffer = EnterIntNum();
-		return [](Mail m) { return m.index == buffer; };
+	static auto GetFilterCritery() {
+		unsigned int buffer = CorrectInput::EnterIntNum();
+		return [&buffer](Mail m) { return m.index == buffer; };
 		//Просим выбрать критерий фильтра и возвращаем
 		//лямбда функцию - предикат.
 		//"Выберите как вы хотите фильтровать, по имени
@@ -62,18 +62,11 @@ public:
 	   //То есть вызываем саму себя return GetFilterCritery();
 	   //Всё аналогично
 	}
-	template <class Func>
-	static void GetSortCritery() {
-		return [](Mail x, Mail y) { return x.reciever_name < y.reciever_name; }
+
+	static auto GetSortCritery() {
+		return [](Mail x, Mail y) { return x.reciever_name < y.reciever_name; };
 			//Всё тоже самое
 	}
 };
-
-//Как вызывать, это всё в main.
-Database<Mail> db;
-InteractDB::AddElement(db);
-Database<Mail> new_db = InteractDB::FilterElements(db);
-Mail found = InteractDB::FindElement(new_db);
-InteractDB::SortElements(new_db);
 
 
