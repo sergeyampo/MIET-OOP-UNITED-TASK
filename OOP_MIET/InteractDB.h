@@ -2,6 +2,7 @@
 #include "Database.h"
 #include "CorrectInput.h"
 #include <iostream>
+#include "FoodInteract.h"
 
 //”ниверсальный интерфейс работы с базой данных
 namespace InteractDB {
@@ -20,11 +21,13 @@ namespace InteractDB {
 	template <class InteractType, class ItemType>
 	void AddFewElements(Database<ItemType>& db) {
 		cout << "Enter amount of elements, which you want to create\n"
-			"or type 0 if you don't: ";
+			"or type 0 if you don't: ";	
 		int amount = CorrectInput::EnterIntNum();
 		for (int i = 0; i < amount; i++)
-			cout << "Enter " << i++ << " element" << endl;
+		{			
+			cout << "Enter " << i+1 << " element: " << endl;
 			AddElement<InteractType>(db);
+		}
 	}
 
 	//‘ункци€ получает базу данных и выводит его в виде таблицы
