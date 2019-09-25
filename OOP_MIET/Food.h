@@ -12,6 +12,6 @@ struct Food {
 	unsigned int count;
 	double cost;
 
-	bool empty() { return fam.empty() && type == 0 && weight == 0 && count == 0 && cost == 0.00; }
+	bool Empty() { return fam.empty() && type == 0 && weight == 0 && count == 0 && cost == 0.00; }
 };
 

@@ -12,8 +12,8 @@
 #include <iostream>
 #include <fstream>
 
-#define InterType MailInteract
-#define Type Mail
+#define InterType FoodInteract
+#define Type Food
 
 using namespace std;
 
