@@ -17,18 +17,21 @@ public:
 		cout << "Enter index: ";
 		Buffer.index = CorrectInput::EnterIntNum();
 		ClearCin(cin);
-		cout << "Enter reciver_adresss: ";
+
+		cout << "Enter reciever adresss: ";
 		getline(cin, Buffer.reciever_adress);
-		ClearCin(cin);
-		cout << "Enter reciver_name: ";
+
+		cout << "Enter reciever name: ";
 		Buffer.reciever_name = CorrectInput::EnterSym();
 		ClearCin(cin);
-		cout << "Enter sender_adresss: ";
+
+		cout << "Enter sender adresss: ";
 		getline(cin, Buffer.sender_adress);
-		ClearCin(cin);
-		cout << "Enter sender_name: ";
+
+		cout << "Enter sender name: ";
 		Buffer.sender_name = CorrectInput::EnterSym();
 		ClearCin(cin);
+
 		cout << "Enter cost: ";
 		Buffer.cost = CorrectInput::EnterDoubleNum();
 		ClearCin(cin);
@@ -38,14 +41,17 @@ public:
 
 	static auto GetFindCritery() {
 		cout << "Type the sender adress to find: ";
-		string buffer = CorrectInput::EnterSym();;
-		return [&buffer](Mail m) { return m.sender_name == buffer; };
+		string buffer;
+		ClearCin(std::cin);
+		getline(std::cin, buffer);
+
+		return [buffer](Mail m) { return m.sender_adress == buffer; };
 	}
 
 	static auto GetFilterCritery() {
-		cout << "Type the index for filtering: ";;
+		cout << "Type the index for filtering: ";
 		unsigned int buffer = CorrectInput::EnterIntNum();
-		return [&buffer](Mail m) { return m.index == buffer; };
+		return [buffer](Mail m) { return m.index == buffer; };
 	}
 
 	static auto GetSortCritery() {
@@ -54,8 +60,15 @@ public:
 	}
 
 	static void OutputData(Mail buffer) {
-		cout << buffer.index << "\t" << buffer.reciever_adress << "\t" << buffer.reciever_name << "\t" << buffer.sender_adress << "\t" << buffer.sender_name << "\t" << buffer.cost;
+		cout << buffer.index << "\t" << buffer.reciever_adress << "\t" << buffer.reciever_name << "\t" << buffer.sender_adress << "\t" << buffer.sender_name << "\t" << buffer.cost << "\n";
 	}
+
+	static const string& GetFilename() {
+		return filename;
+	}
+
+  private:
+	  inline static const std::string filename = "DatabaseOfMails.cereal";
 };
 
 
