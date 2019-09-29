@@ -67,27 +67,43 @@ int main() {
 			WaitEnter(cin, cout);
 		}
 		else if (act == '3') {
-			if (auto found_el = InteractDB::FindElement<InterType>(db); !found_el.Empty()) {
-				cout << "Found element:\n";
-				InterType::OutputData(found_el);
-				WaitEnter(cin, cout);
+			if (!db.Empty()) {
+				if (auto found_el = InteractDB::FindElement<InterType>(db); !found_el.Empty()) {
+					cout << "Found element:\n";
+					InterType::OutputData(found_el);
+				}
 			}
+			else
+				cout << "There's nothing to find!\n";
+
+			WaitEnter(cin, cout);
 		}
 		else if (act == '4') {
-			if (auto new_db = InteractDB::FilterElements<InterType>(db); !new_db.Empty()) {
-				cout << "Filtered Elements:\n";
-				InteractDB::PrintTable<InterType>(new_db);
-				WaitEnter(cin, cout);
+			if (!db.Empty()) {
+				if (auto new_db = InteractDB::FilterElements<InterType>(db); !new_db.Empty()) {
+					cout << "Filtered Elements:\n";
+					InteractDB::PrintTable<InterType>(new_db);
+				}
 			}
+			else
+				cout << "There's nothing to find!\n";
+
+			WaitEnter(cin, cout);
 		}
 		else if (act == '5') {
-			InteractDB::SortElements<InterType>(db);
-			cout << "Sorted Elements:\n";
-			InteractDB::PrintTable<InterType>(db);
+			if (!db.Empty()) {
+				InteractDB::SortElements<InterType>(db);
+				cout << "Sorted Elements:\n";
+				InteractDB::PrintTable<InterType>(db);
+			}
+			else
+				cout << "There's nothing to sort!\n";
 			WaitEnter(cin, cout);
 		}
 		else if(act == '6'){
-			InteractDB::SaveDb<InterType>(db);
+			if(!db.Empty())
+			  InteractDB::SaveDb<InterType>(db);
+			
 			is_over = true;
 			cout << "Waiting for closing...";
 			this_thread::sleep_until(chrono::system_clock::now() + 2.5s);
