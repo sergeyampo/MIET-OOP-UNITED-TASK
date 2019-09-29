@@ -25,9 +25,12 @@ namespace InteractDB {
 			"or type 0 if you don't:\n" <<
 			"Enter: ";
 		int amount = CorrectInput::EnterIntNum();
+		system("CLS");
 
-		for (int i = 0; i < amount; i++)
+		for (int i = 0; i < amount; ++i){
+			std::cout << "Enter " << i + 1 << " element: " << "\n";
 			AddElement<InteractType>(db);
+		}
 	}
 
 	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
@@ -77,14 +80,15 @@ namespace InteractDB {
 
 	//Диалог восстановления базы данных из предыдущего сохранения, файла с именем
 	//database_dump_namefile. Вызываем RestoreDbWith<Food>()
-	template <class ItemType>
+	template <class InteractType, class ItemType>
 	Database<ItemType> RestoreDbWith() {
-		const std::string database_dump_namefile = "Database.cereal";
+		const std::string database_dump_namefile = InteractType::GetFilename();
 		cout << "Do you want to restore data from the last save?\n"
 			    "\'Y\' - yes, \'N\' - no\n"
 			    "Enter: ";
 		char choice;
 		cin >> choice;
+		system("CLS");
 		
 		Database<ItemType> rs_db;
 		if (choice == 'Y') {
@@ -94,7 +98,7 @@ namespace InteractDB {
 			}
 			catch (domain_error e) {
 				cout << e.what() << endl;
-				return RestoreDbWith<ItemType>();
+				return RestoreDbWith<InteractType, ItemType>();
 			}
 		}
 		else if (choice == 'N') {
@@ -103,7 +107,7 @@ namespace InteractDB {
 		else {
 			ClearCin(cin);
 			cout << "Incorrect input, try again!\n";
-			return RestoreDbWith<ItemType>();
+			return RestoreDbWith<InteractType, ItemType>();
 		}
 
 		return rs_db;
@@ -111,9 +115,9 @@ namespace InteractDB {
 
 	//Диалог сохранения базы данных в файл с именем
 	//database_dump_namefile.
-	template <class ItemType>
+	template <class InteractType, class ItemType>
 	void SaveDb(const Database<ItemType>& db) {
-		const std::string database_dump_namefile = "Database.cereal";
+		const std::string database_dump_namefile = InteractType::GetFilename();
 		cout << "Do you want to save data to file?\n"
 			"\'Y\' - yes, \'N\' - no\n"
 			"Enter: ";
@@ -124,10 +128,11 @@ namespace InteractDB {
 			try {
 				FileIO file(database_dump_namefile);
 				file.WriteBinary(db, database_dump_namefile);
+				std::cout << "The " + database_dump_namefile + " file was successfully saved.\n";
 			}
 			catch (domain_error e) {
 				cout << e.what() << endl;
-				return SaveDb(db);
+				return SaveDb<InteractType>(db);
 			}
 		}
 		else if (choice == 'N') {
@@ -136,17 +141,15 @@ namespace InteractDB {
 		else {
 			ClearCin(cin);
 			cout << "Incorrect input, try again!\n";
-			return SaveDb(db);
+			return SaveDb<InteractType>(db);
 		}
 	}
-	
+
 	//Функция получает базу данных и выводит её в виде таблицы
 	template <class InteractType, class ItemType>
 	void PrintTable(Database<ItemType>& db) {
-		for (int i = 0; i < db.Size(); ++i) {
+		for (int i = 0; i < db.Size(); ++i)
 			InteractType::OutputData(db[i]);
-			cout << "\n";
-		}
 	}
 
 };
