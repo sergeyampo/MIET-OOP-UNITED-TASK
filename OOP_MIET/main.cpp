@@ -1,58 +1,114 @@
-#include "Database.h"
+п»ї#include "Database.h"
 #include "Mail.h"
 #include "Food.h"
 #include "FileIO.h"
 #include "InteractDB.h"
+#include "FoodInteract.h"
+#include "MailInteract.h"
+//#include "StudentInteract.h"
+#include "InteractDB.h"
 
-#include <iostream>
-#include <vector>
 #include <string>
+#include <iostream>
 #include <fstream>
+#include <stdlib.h>
+#include <chrono>
+#include <thread>
+
+#define InterType MailInteract	
+#define Type Mail
 
 using namespace std;
 
+char ChooseFirstAction() {
+	system("CLS");
+	cout << "Choose an action:\n" <<
+		"1)Add new element\n" <<
+		"2)Print database\n" <<
+		"3)Searching\n" <<
+		"4)Filter\n" <<
+		"5)Sort\n"
+		"6)Exit\n" <<
+		"Enter number: ";
+	char choice;
+	cin >> choice;
+	system("CLS");
+
+	if (choice == '1' || choice == '2' || choice == '3' || choice == '4' || choice == '5' || choice == '6') return choice;
+	else { ClearCin(cin); return ChooseFirstAction(); }
+
+	return '0';
+}
+
+//Р¤СѓРЅРєС†РёСЏ РѕР¶РёРґР°РµС‚ РЅР°Р¶Р°С‚РёСЏ РћРє
+istream& WaitEnter(istream& in, ostream& out) {
+	out << "Press the enter to continue...";
+	ClearCin(in);
+	in.get();
+
+	return in;
+}
+
 int main() {
-	//Примеры
-	Database<Mail> db;
-	string s = "Sasha";
-	Mail m(675000, "s", "s", "s", "s", float(12.55));
-	db.Add(m);
+	//Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… СЃ С„Р°Р№Р»Р°
+	Database<Type> db;
+	db = InteractDB::RestoreDbWith<InterType, Type>();
 
-	//Заполним отличающимеся по цене
-	for (unsigned i = 1; i < 20; ++i)
-		db.Add({ 6750000, "a", "b", "c", "d", float(12.5 + i) });
+	//Р¦РёРєР»РёС‡РµСЃРєРёР№ Р·Р°РїСЂРѕСЃ РґРµР№СЃС‚Р°РёСЏ
+	bool is_over = false;
+	do {
+		
+		char act = ChooseFirstAction();
+		if (act == '1') {
+			InteractDB::AddFewElements<InterType>(db);
+		}
+		else if (act == '2') {
+			InteractDB::PrintTable<InterType>(db);
+			WaitEnter(cin, cout);
+		}
+		else if (act == '3') {
+			if (!db.Empty()) {
+				if (auto found_el = InteractDB::FindElement<InterType>(db); !found_el.Empty()) {
+					cout << "Found element:\n";
+					InterType::OutputData(found_el);
+				}
+			}
+			else
+				cout << "There's nothing to find!\n";
 
-	cout << "Common list:\n";
-	//Выведем цены
-	for (size_t i = 0; i < db.Size(); ++i)
-		cout << db[i].cost << "\n";
+			WaitEnter(cin, cout);
+		}
+		else if (act == '4') {
+			if (!db.Empty()) {
+				if (auto new_db = InteractDB::FilterElements<InterType>(db); !new_db.Empty()) {
+					cout << "Filtered Elements:\n";
+					InteractDB::PrintTable<InterType>(new_db);
+				}
+			}
+			else
+				cout << "There's nothing to find!\n";
 
-	//Поищем с указанным индексом 675000
-	Mail found = db.Find([](Mail m) { return m.index == 675000; });
-	//[](Mail m) { return m.index == 675000; } значит что мы делаем лямбда функцию
-	//m - элемент базы данных, когда условия описанные в { } - теле функции выполняться
-	//функция Find вернет этот m элемент он и присвоится found.
-
-	cout << "Price greater than 20:\n";
-	//Пофильтруем по цене выше 20
-	auto new_db = db.Filter([](Mail m) { return m.cost > 20; });
-
-	//Выведем цены
-	for (size_t i = 0; i < new_db.Size(); ++i)
-		cout << new_db[i].cost << "\n";
-
-	new_db.Add({ 12, "asda", "asdasd", "asdasd", "asd", 12.5 });
-	ofstream fout("file.bin", ios_base::binary | ios_base::out | ios_base::trunc);
-	fout.write(reinterpret_cast<char*>(&new_db), sizeof(new_db));
-	fout.close();
-
-	Database<Mail> mn;
-	ifstream fin("file.bin", ios_base::binary | ios_base::in);
-	fin.read(reinterpret_cast<char*>(&mn), sizeof(Database<Mail>));
-
-	//Работа с InteractDB
-	Database<Food> database = InteractDB::CreateDatabaseWith<FoodInteract, Food>();
-	Food f = InteractDB::FindElement<FoodInteract>(database);
+			WaitEnter(cin, cout);
+		}
+		else if (act == '5') {
+			if (!db.Empty()) {
+				InteractDB::SortElements<InterType>(db);
+				cout << "Sorted Elements:\n";
+				InteractDB::PrintTable<InterType>(db);
+			}
+			else
+				cout << "There's nothing to sort!\n";
+			WaitEnter(cin, cout);
+		}
+		else if(act == '6'){
+			if(!db.Empty())
+			  InteractDB::SaveDb<InterType>(db);
+			
+			is_over = true;
+			cout << "Waiting for closing...";
+			this_thread::sleep_until(chrono::system_clock::now() + 2.5s);
+		}
+	} while (!is_over);
 
 	return 0;
 }
