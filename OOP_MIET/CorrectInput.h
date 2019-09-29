@@ -15,7 +15,7 @@ namespace CorrectInput {
 				if (isalpha(*beg) == false)//проверка каждого символа на букву
 					key = 0;
 			if (key == 0)
-				cout << "Enter text again" << "\n";
+				cout << "Enter text again: ";
 			else
 				return text;
 		}
@@ -33,6 +33,7 @@ namespace CorrectInput {
 			{
 				cin.clear(); // то возвращаем cin в 'обычный' режим работы
 				cin.ignore(32767, '\n'); // и удаляем значения предыдущего ввода из входного буфера
+				cout << "Enter number again: ";
 			}
 
 			else // если всё хорошо, то возвращаем a
@@ -49,6 +50,7 @@ namespace CorrectInput {
 			{
 				cin.clear(); // то возвращаем cin в 'обычный' режим работы
 				cin.ignore(32767, '\n'); // и удаляем значения предыдущего ввода из входного буфера
+				cout << "Enter number again: ";
 			}
 			else // если всё хорошо, то возвращаем a
 				return a;
