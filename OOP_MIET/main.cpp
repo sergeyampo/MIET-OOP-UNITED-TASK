@@ -1,4 +1,4 @@
-#include "Database.h"
+п»ї#include "Database.h"
 #include "Mail.h"
 #include "Food.h"
 #include "FileIO.h"
@@ -40,7 +40,7 @@ char ChooseFirstAction() {
 	return '0';
 }
 
-//Функция ожидает нажатия Ок
+//Р¤СѓРЅРєС†РёСЏ РѕР¶РёРґР°РµС‚ РЅР°Р¶Р°С‚РёСЏ РћРє
 istream& WaitEnter(istream& in, ostream& out) {
 	out << "Press the enter to continue...";
 	ClearCin(in);
@@ -50,11 +50,11 @@ istream& WaitEnter(istream& in, ostream& out) {
 }
 
 int main() {
-	//Восстановление базы данных с файла
+	//Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… СЃ С„Р°Р№Р»Р°
 	Database<Type> db;
 	db = InteractDB::RestoreDbWith<InterType, Type>();
 
-	//Циклический запрос дейстаия
+	//Р¦РёРєР»РёС‡РµСЃРєРёР№ Р·Р°РїСЂРѕСЃ РґРµР№СЃС‚Р°РёСЏ
 	bool is_over = false;
 	do {
 		

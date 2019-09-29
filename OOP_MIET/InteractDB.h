@@ -1,14 +1,14 @@
-#pragma once
+п»ї#pragma once
 #include "Database.h"
 #include "CorrectInput.h"
 #include "MailInteract.h"
 #include <iostream>
 
-//Универсальный интерфейс работы с базой данных
+//РЈРЅРёРІРµСЂСЃР°Р»СЊРЅС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…
 namespace InteractDB {
-	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
-	//функциями. Добавляет элемент в базу данных.
-	//Вызываем как InteractDB::AddElement<FoodInteract>(db);
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё С‚РѕС‡РЅС‹Р№ С€Р°Р±Р»РѕРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЃ СѓС‚РѕС‡РЅС‘РЅРЅС‹РјРё РґРёР°Р»РѕРіРѕРІС‹РјРё
+	//С„СѓРЅРєС†РёСЏРјРё. Р”РѕР±Р°РІР»СЏРµС‚ СЌР»РµРјРµРЅС‚ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….
+	//Р’С‹Р·С‹РІР°РµРј РєР°Рє InteractDB::AddElement<FoodInteract>(db);
 	template <class InteractType, class ItemType>
 	void AddElement(Database<ItemType>& db) {
 		//cout something
@@ -16,8 +16,8 @@ namespace InteractDB {
 		db.Add(item);
 	}
 
-	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
-	//функциями. Добавляет несколько элементов в базу данных. 
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё С‚РѕС‡РЅС‹Р№ С€Р°Р±Р»РѕРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЃ СѓС‚РѕС‡РЅС‘РЅРЅС‹РјРё РґРёР°Р»РѕРіРѕРІС‹РјРё
+	//С„СѓРЅРєС†РёСЏРјРё. Р”РѕР±Р°РІР»СЏРµС‚ РЅРµСЃРєРѕР»СЊРєРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…. 
 	template <class InteractType, class ItemType>
 	void AddFewElements(Database<ItemType>& db) {
 		unsigned int count = 0;
@@ -33,9 +33,9 @@ namespace InteractDB {
 		}
 	}
 
-	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
-	//Диалог создания базы данных.
-	//Вызываем как CreateDatabaseWith<FoodInteract, Food>()
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ С‡РµСЂРµР· СЏРІРЅС‹Рµ С€Р°Р±Р»РѕРЅРЅС‹Рµ Р°СЂРіСѓРјРµРЅС‚С‹ РєР»Р°СЃСЃ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ b С‚РёРї С…СЂР°РЅРёРјС‹Р№ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
+	//Р”РёР°Р»РѕРі СЃРѕР·РґР°РЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С….
+	//Р’С‹Р·С‹РІР°РµРј РєР°Рє CreateDatabaseWith<FoodInteract, Food>()
 	template <class InteractType, class ItemType>
 	Database<ItemType> CreateDatabaseWith() {
 		cout << "Enter the size of DataBase: ";
@@ -48,7 +48,7 @@ namespace InteractDB {
 		return db;
 	}
 
-	//Диалог поиска элементов
+	//Р”РёР°Р»РѕРі РїРѕРёСЃРєР° СЌР»РµРјРµРЅС‚РѕРІ
 	template <class InteractType, class ItemType>
 	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
@@ -59,8 +59,8 @@ namespace InteractDB {
 		return found;
 	}
 
-	//Диалог фильтра элементов - возвращаемый базу данных элементы которых
-	//удовлетворяют предикату InteractType::GetFilterCritery.
+	//Р”РёР°Р»РѕРі С„РёР»СЊС‚СЂР° СЌР»РµРјРµРЅС‚РѕРІ - РІРѕР·РІСЂР°С‰Р°РµРјС‹Р№ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… СЌР»РµРјРµРЅС‚С‹ РєРѕС‚РѕСЂС‹С…
+	//СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ РїСЂРµРґРёРєР°С‚Сѓ InteractType::GetFilterCritery.
 	template <class InteractType, class ItemType>
 	Database<ItemType> FilterElements(Database<ItemType>& db) {
 		auto predic = InteractType::GetFilterCritery();
@@ -71,15 +71,15 @@ namespace InteractDB {
 		return new_db;
 	}
 
-	//Диалог сортировки элементов, меняет порядок элементов переданной базы данных.
+	//Р”РёР°Р»РѕРі СЃРѕСЂС‚РёСЂРѕРІРєРё СЌР»РµРјРµРЅС‚РѕРІ, РјРµРЅСЏРµС‚ РїРѕСЂСЏРґРѕРє СЌР»РµРјРµРЅС‚РѕРІ РїРµСЂРµРґР°РЅРЅРѕР№ Р±Р°Р·С‹ РґР°РЅРЅС‹С….
 	template <class InteractType, class ItemType>
 	void SortElements(Database<ItemType>& db) {
 		auto predic = InteractType::GetSortCritery();
 		db.Sort(predic);
 	}
 
-	//Диалог восстановления базы данных из предыдущего сохранения, файла с именем
-	//database_dump_namefile. Вызываем RestoreDbWith<Food>()
+	//Р”РёР°Р»РѕРі РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РёР· РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ, С„Р°Р№Р»Р° СЃ РёРјРµРЅРµРј
+	//database_dump_namefile. Р’С‹Р·С‹РІР°РµРј RestoreDbWith<Food>()
 	template <class InteractType, class ItemType>
 	Database<ItemType> RestoreDbWith() {
 		const std::string database_dump_namefile = InteractType::GetFilename();
@@ -113,7 +113,7 @@ namespace InteractDB {
 		return rs_db;
 	}
 
-	//Диалог сохранения базы данных в файл с именем
+	//Р”РёР°Р»РѕРі СЃРѕС…СЂР°РЅРµРЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РІ С„Р°Р№Р» СЃ РёРјРµРЅРµРј
 	//database_dump_namefile.
 	template <class InteractType, class ItemType>
 	void SaveDb(const Database<ItemType>& db) {
@@ -145,7 +145,7 @@ namespace InteractDB {
 		}
 	}
 
-	//Функция получает базу данных и выводит её в виде таблицы
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё РІС‹РІРѕРґРёС‚ РµС‘ РІ РІРёРґРµ С‚Р°Р±Р»РёС†С‹
 	template <class InteractType, class ItemType>
 	void PrintTable(Database<ItemType>& db) {
 		for (int i = 0; i < db.Size(); ++i)

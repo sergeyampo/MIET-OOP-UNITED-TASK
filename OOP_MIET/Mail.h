@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 
 struct Mail {
@@ -7,7 +7,7 @@ struct Mail {
 	Mail() = default;
 	bool Empty() { return index == 0 && reciever_adress.empty() && reciever_name.empty() && sender_adress.empty() && sender_name.empty() && cost == 0.00; }
 
-	//Сериализация
+	//РЎРµСЂРёР°Р»РёР·Р°С†РёСЏ
 	template<class Archive>
 	void serialize(Archive & archive){
 		archive(index, reciever_adress, reciever_name, sender_adress, sender_name, cost);

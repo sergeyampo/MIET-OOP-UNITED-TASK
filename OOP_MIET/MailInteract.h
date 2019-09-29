@@ -1,16 +1,16 @@
-#pragma once
+п»ї#pragma once
 
 #include <iostream>
 #include <string>
 #include "Mail.h"
 
-//Каждый себе делает такой класс типо ShopInteract, CafeInteract, SexInteract
+//РљР°Р¶РґС‹Р№ СЃРµР±Рµ РґРµР»Р°РµС‚ С‚Р°РєРѕР№ РєР»Р°СЃСЃ С‚РёРїРѕ ShopInteract, CafeInteract, SexInteract
 class MailInteract {
 public:
 	MailInteract() = delete;
 	~MailInteract() = delete;
 
-	//Общая функция ввода всех полей
+	//РћР±С‰Р°СЏ С„СѓРЅРєС†РёСЏ РІРІРѕРґР° РІСЃРµС… РїРѕР»РµР№
 	static Mail InputData() {
 		Mail Buffer;
 		string input;
