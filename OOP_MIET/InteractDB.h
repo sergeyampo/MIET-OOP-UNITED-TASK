@@ -148,6 +148,11 @@ namespace InteractDB {
 	//Функция получает базу данных и выводит её в виде таблицы
 	template <class InteractType, class ItemType>
 	void PrintTable(Database<ItemType>& db) {
+		if (db.Empty()) {
+			std::cout << "There's nothing to show!\n";
+			return;
+		}
+		InteractType::PrintColumnNames();
 		for (int i = 0; i < db.Size(); ++i)
 			InteractType::OutputData(db[i]);
 	}
