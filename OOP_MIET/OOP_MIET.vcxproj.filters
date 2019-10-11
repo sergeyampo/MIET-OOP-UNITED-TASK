@@ -33,13 +33,16 @@
     <ClInclude Include="Student.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MailInteract.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="StudentInteract.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="CorrectInput.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MailInteract.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodInteract.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

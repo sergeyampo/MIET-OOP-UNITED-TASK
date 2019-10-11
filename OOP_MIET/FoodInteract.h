@@ -15,16 +15,16 @@ public:
 
 	static Food InputData() {
 		Food Buffer;
-		std::cout << "enter fam" << std::"\n";
-		Buffer.fam = CorrectInput::EnterSym();
-		std::cout << "enter type" << std::"\n";
-		Buffer.type = CorrectInput::EnterIntNum();
-		std::cout << "enter wight" << std::"\n";
-		Buffer.weight = CorrectInput::EnterDoubleNum();
-		std::cout << "enter count" << std::"\n";
-		Buffer.count = CorrectInput::EnterIntNum();
-		std::cout << "enter cost" << std::"\n";
-		Buffer.cost = CorrectInput::EnterDoubleNum();
+		std::cout << "enter fam" << "\n";
+		Buffer.fam = EnterLetters();
+		std::cout << "enter type" << "\n";
+		Buffer.type = EnterInt();
+		std::cout << "enter wight" << "\n";
+		Buffer.weight = EnterDouble();
+		std::cout << "enter count" << "\n";
+		Buffer.count = EnterInt();
+		std::cout << "enter cost" << "\n";
+		Buffer.cost = EnterDouble();
 		return Buffer;
 		//Вызываем InputIndex(), InputRecAdress() ...
 		//Если вернули false значит всё плохо вызываем их ещё раз
@@ -39,7 +39,7 @@ public:
 
 	static auto GetFindCritery() {
 
-		std::string buffer = CorrectInput::EnterSym();
+		std::string buffer = EnterLetters();
 		return [buffer](Food m) { return m.fam == buffer; };
 
 		//если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
@@ -51,7 +51,7 @@ public:
 
 	static auto GetFilterCritery() {
 
-		unsigned int buffer = CorrectInput::EnterIntNum();
+		unsigned int buffer = EnterInt();
 		return [buffer](Food m) { return m.type == buffer; };
 
 		//Просим выбрать критерий фильтра и возвращаем
@@ -68,7 +68,7 @@ public:
 	}
 	template <class Func>
 	static void GetSortCritery() {
-		std::cout << "enter critery of search:" << std::"\n" << "1-fam" << std::"\n" << "2-type" << std::"\n" << "3-wight" << std::"\n" << "4-count" << std::"\n" << "5-cost" << std::"\n";
+		std::cout << "enter critery of search:" << "\n" << "1-fam" << "\n" << "2-type" << "\n" << "3-wight" << "\n" << "4-count" << "\n" << "5-cost" << "\n";
 		unsigned int k = 0;
 		cin >> k;
 		if (k == 1)

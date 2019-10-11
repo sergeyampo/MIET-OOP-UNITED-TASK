@@ -4,6 +4,8 @@
 #include <string>
 #include "Mail.h"
 
+using namespace std;
+
 //Каждый себе делает такой класс типо ShopInteract, CafeInteract, SexInteract
 class MailInteract {
 public:
@@ -15,22 +17,22 @@ public:
 		Mail Buffer;
 		string input;
 		cout << "Enter index: ";
-		Buffer.index = CorrectInput::EnterIntNum();
+		Buffer.index = EnterInt();
 		ClearCin(cin);
 		cout << "Enter reciver_adresss: ";
 		getline(cin, Buffer.reciever_adress);
 		ClearCin(cin);
 		cout << "Enter reciver_name: ";
-		Buffer.reciever_name = CorrectInput::EnterSym();
+		Buffer.reciever_name = EnterLetters();
 		ClearCin(cin);
 		cout << "Enter sender_adresss: ";
 		getline(cin, Buffer.sender_adress);
 		ClearCin(cin);
 		cout << "Enter sender_name: ";
-		Buffer.sender_name = CorrectInput::EnterSym();
+		Buffer.sender_name = EnterLetters();
 		ClearCin(cin);
 		cout << "Enter cost: ";
-		Buffer.cost = CorrectInput::EnterDoubleNum();
+		Buffer.cost = EnterDouble();
 		ClearCin(cin);
 		
 		return Buffer;
@@ -38,13 +40,13 @@ public:
 
 	static auto GetFindCritery() {
 		cout << "Type the sender adress to find: ";
-		string buffer = CorrectInput::EnterSym();;
+		string buffer = EnterLetters();;
 		return [&buffer](Mail m) { return m.sender_name == buffer; };
 	}
 
 	static auto GetFilterCritery() {
 		cout << "Type the index for filtering: ";;
-		unsigned int buffer = CorrectInput::EnterIntNum();
+		unsigned int buffer = EnterInt();
 		return [&buffer](Mail m) { return m.index == buffer; };
 	}
 

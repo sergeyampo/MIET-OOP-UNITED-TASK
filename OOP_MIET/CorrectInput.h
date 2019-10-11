@@ -65,7 +65,7 @@ int EnterInt() {
 		return stoi(text);
 	else {
 		ClearCin(std::cin);
-		std::cout << "Incorrect input, repeat please";
+		std::cout << "\nIncorrect input, repeat please: ";
 		return EnterInt();
 	}
 }
@@ -78,7 +78,7 @@ double EnterDouble() {
 		return stof(text);
 	else {
 		ClearCin(std::cin);
-		std::cout << "Incorrect input, repeat please";
+		std::cout << "\nIncorrect input, repeat please: ";
 		return EnterDouble();
 	}
 }
@@ -91,7 +91,7 @@ std::string EnterLetters() {
 		return text;
 	else {
 		ClearCin(std::cin);
-		std::cout << "Incorrect input, repeat please";
+		std::cout << "\nIncorrect input, repeat please: ";
 		return EnterLetters();
 	}
 }
@@ -104,7 +104,7 @@ std::string EnterWords() {
 		return text;
 	else {
 		ClearCin(std::cin);
-		std::cout << "Incorrect input, repeat please";
+		std::cout << "\nIncorrect input, repeat please: ";
 		return EnterWords();
 	}
 }

@@ -21,23 +21,14 @@ namespace InteractDB {
 	//ôóíêöèÿìè. Äîáàâëÿåò íåñêîëüêî ýëåìåíòîâ â áàçó äàííûõ. 
 	template <class InteractType, class ItemType>
 	void AddFewElements(Database<ItemType>& db) {
-		cout << "Enter amount of elements, which you want to create\n
-			"or type 0 if you don't:\n";
-		int amount = CorrectInput::EnterIntNum();
+		cout << "Enter amount of elements, which you want to create \n or type 0 if you don't:\n";
+		int amount = EnterInt();
 		for (int i = 0; i < amount; i++)
 		{			
 			cout << "Enter " << i+1 << " element: " << "\n";
 			AddElement<InteractType>(db);
 		}
 	}
-
-	//������� �������� ���� ������ � ������� ��� � ���� �������
-	template <class InteractType, class ItemType>
-	void PrintTable(Database<ItemType>& db) {
-		for (int i = 0; i < db.Size(); ++i)
-			InteractType::OutputData(db[i]);
-    }
-	
 
 
 	//Ôóíêöèÿ ïîëó÷àåò ÷åðåç ÿâíûå øàáëîííûå àðãóìåíòû êëàññ âçàèìîäåéñòâèÿ b òèï õðàíèìûé â áàçå äàííûõ
