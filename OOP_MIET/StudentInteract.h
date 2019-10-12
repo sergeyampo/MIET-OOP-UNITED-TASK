@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <tuple>
 #include "Student.h"
 
 using namespace std;
@@ -19,13 +20,13 @@ public:
 		cout << "Enter surname: ";
 		getline(std::cin, Buffer.surname);
 
-		cout << "\nEnter name: ";
+		cout << "Enter name: ";
 		getline(std::cin, Buffer.name);
 
-		cout << "\nEnter faculty: ";
+		cout << "Enter faculty: ";
 		getline(std::cin, Buffer.faculty);
 
-		cout << "\nEnter group: ";
+		cout << "Enter group: ";
 		Buffer.group = CorrectInput::EnterIntNum();
 		ClearCin(std::cin);
 
@@ -46,10 +47,9 @@ public:
 		return [&buffer](Student m) { return m.group == buffer; };
 	}
 
-	//Add smart string comparing
 	static auto GetSortCritery() {
 		cout << "Sorting by increasing cost.\n";
-		return [](Student x, Student y) { return x.surname + x.name < y.surname + y.name; };
+		return [](Student x, Student y) { return tie(x.surname, x.name) < tie(y.surname, y.name); };
 	}
 	
 
@@ -63,7 +63,7 @@ public:
 	}
 
 	static void PrintColumnNames() {
-		std::cout << "Surname\t" << "Name\t" << "Faculty\t" << "Group\t";
+		std::cout << "Surname\t" << "Name\t" << "Faculty\t" << "Group\t\n";
 	}
 
 private:
