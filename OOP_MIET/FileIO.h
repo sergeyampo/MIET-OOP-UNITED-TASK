@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "cereal/archives/binary.hpp"
 #include "cereal/types/vector.hpp"
 #include "cereal/types/string.hpp"
@@ -19,7 +19,7 @@ void ClearCin(std::istream& in) {
 	in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-//Класс для сериализации и сохранения и считывания объектов с помощью библиотеки cereal
+//РљР»Р°СЃСЃ РґР»СЏ СЃРµСЂРёР°Р»РёР·Р°С†РёРё Рё СЃРѕС…СЂР°РЅРµРЅРёСЏ Рё СЃС‡РёС‚С‹РІР°РЅРёСЏ РѕР±СЉРµРєС‚РѕРІ СЃ РїРѕРјРѕС‰СЊСЋ Р±РёР±Р»РёРѕС‚РµРєРё cereal
 	class FileIO {
 	public:
 		FileIO() = default;
@@ -28,8 +28,8 @@ void ClearCin(std::istream& in) {
 		FileIO(FileIO&& file) = default;
 		explicit FileIO(const std::string& n) : filename(n) { }
 
-		//Класс принимает объект и название файла из которого
-		//мы бинарно считаем данные в этот объект
+		//РљР»Р°СЃСЃ РїСЂРёРЅРёРјР°РµС‚ РѕР±СЉРµРєС‚ Рё РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р° РёР· РєРѕС‚РѕСЂРѕРіРѕ
+		//РјС‹ Р±РёРЅР°СЂРЅРѕ СЃС‡РёС‚Р°РµРј РґР°РЅРЅС‹Рµ РІ СЌС‚РѕС‚ РѕР±СЉРµРєС‚
 		template <class T>
 		T ReadBinary(T obj, const std::string& file) {
 			if (!FileExist(file))
@@ -46,8 +46,8 @@ void ClearCin(std::istream& in) {
 			return obj;
 		}
 
-		//Класс принимает объект и название файла, куда мы бинарно запишем данные
-		//из этого объекта
+		//РљР»Р°СЃСЃ РїСЂРёРЅРёРјР°РµС‚ РѕР±СЉРµРєС‚ Рё РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р°, РєСѓРґР° РјС‹ Р±РёРЅР°СЂРЅРѕ Р·Р°РїРёС€РµРј РґР°РЅРЅС‹Рµ
+		//РёР· СЌС‚РѕРіРѕ РѕР±СЉРµРєС‚Р°
 		template <class T>
 		void WriteBinary(T obj, const std::string& file) {
 			if (!FileExist(file)) {
@@ -64,7 +64,7 @@ void ClearCin(std::istream& in) {
 			oarchive(obj);
 		}
 
-		//Класс создаёт новый файл с переданным именем
+		//РљР»Р°СЃСЃ СЃРѕР·РґР°С‘С‚ РЅРѕРІС‹Р№ С„Р°Р№Р» СЃ РїРµСЂРµРґР°РЅРЅС‹Рј РёРјРµРЅРµРј
 		void Create(const std::string& file) {
 			std::ofstream fout(filename.c_str());
 			fout.close();
@@ -79,7 +79,7 @@ void ClearCin(std::istream& in) {
 		//	void WriteText(const std::string& file = filename);
 
 	private:
-		//Функция проверяет наличие указанного файла в папке C++17
+		//Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂСЏРµС‚ РЅР°Р»РёС‡РёРµ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С„Р°Р№Р»Р° РІ РїР°РїРєРµ C++17
 		bool FileExist(const std::string& name) { return std::filesystem::exists(name.c_str()); }
 
 		std::string filename;

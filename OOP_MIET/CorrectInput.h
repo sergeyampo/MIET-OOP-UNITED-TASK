@@ -1,110 +1,68 @@
-#pragma once
-
-#include "FileIO.h"
-#include <string>
-#include <cctype>
+﻿#pragma once
 #include <iostream>
+#include <string>
 
-bool IsDigits(std::string str) {
-	int i = 0;
-	int size = str.size();
-	while (isdigit(str[i]) & i < size) {
-		++i;
-	}
-	return (i == size);
-}
+using namespace std;
 
-bool IsRealNum(std::string str) {
-	int i = 0;
-	int size = str.size();
-	bool PointFound = false;
-	while ((isdigit(str[i]) || str[i]=='.') & i < size) {
-		if (str[i] == '.' & !PointFound)
-			PointFound = true;
-		if (str[i] == '.' & PointFound)
-			return false;
-		++i;
-	}
-	return (i == size);
-}
+namespace CorrectInput {
 
-bool IsLetters(std::string str) {
-	int i = 0;
-	int size = str.size();
-	while (isalpha(str[i]) & i < size) {
-		++i;
-	}
-	return (i == size);
-}
-
-bool IsWords(std::string str) {
-	int i = 0;
-	int size = str.size();
-	while ((isalpha(str[i]) || (isblank(str[i])) & i < size)) {
-		++i;
-	}
-	return (i == size);
-}
-
-	/*
-	static bool IsFilename(std::string str) {
-		int i = 0;
-		int size = str.size();
-		while (isdigit(str[i]) & i < size) {
-			++i;
+	string EnterSym(){
+		string text;
+		while (true){
+			bool key = 1;
+			cin >> text;
+			for (string::const_iterator beg = text.cbegin(); beg != text.cend(); ++beg)
+				if (isalpha(*beg) == false)//проверка каждого символа на букву
+					key = 0;
+			if (key == 0)
+				cout << "Enter text again: ";
+			else
+				return text;
 		}
-		return (i == size);
-	}
-	*/
-
-int EnterInt() {
-	ClearCin(std::cin);
-	std::string text;
-	std::cin >> text;
-	if (IsDigits(text))
-		return stoi(text);
-	else {
-		ClearCin(std::cin);
-		std::cout << "\nIncorrect input, repeat please: ";
-		return EnterInt();
-	}
-}
-
-double EnterDouble() {
-	ClearCin(std::cin);
-	std::string text;
-	std::cin >> text;
-	if (IsRealNum(text))
-		return stof(text);
-	else {
-		ClearCin(std::cin);
-		std::cout << "\nIncorrect input, repeat please: ";
-		return EnterDouble();
-	}
-}
-
-std::string EnterLetters() {
-	ClearCin(std::cin);
-	std::string text;
-	std::cin >> text;
-	if (IsLetters(text))
 		return text;
-	else {
-		ClearCin(std::cin);
-		std::cout << "\nIncorrect input, repeat please: ";
-		return EnterLetters();
-	}
-}
 
-std::string EnterWords() {
-	ClearCin(std::cin);
-	std::string text;
-	std::cin >> text;
-	if (IsWords(text))
-		return text;
-	else {
-		ClearCin(std::cin);
-		std::cout << "\nIncorrect input, repeat please: ";
-		return EnterWords();
 	}
-}
+
+	double EnterDoubleNum()
+	{
+		while (true) // цикл продолжается до тех пор, пока пользователь не введёт корректное значение
+		{
+			double a;
+			cin >> a;
+			if (cin.fail() or a < 0) // если предыдущее извлечение оказалось неудачным,
+			{
+				cin.clear(); // то возвращаем cin в 'обычный' режим работы
+				cin.ignore(32767, '\n'); // и удаляем значения предыдущего ввода из входного буфера
+				cout << "Enter number again: ";
+			}
+
+			else // если всё хорошо, то возвращаем a
+				return a;
+		}
+	}
+	unsigned int EnterIntNum()
+	{
+		while (true) // цикл продолжается до тех пор, пока пользователь не введёт корректное значение
+		{
+			unsigned int a;
+			cin >> a;
+			if (cin.fail()) // если предыдущее извлечение оказалось неудачным,
+			{
+				cin.clear(); // то возвращаем cin в 'обычный' режим работы
+				cin.ignore(32767, '\n'); // и удаляем значения предыдущего ввода из входного буфера
+				cout << "Enter number again: ";
+			}
+			else // если всё хорошо, то возвращаем a
+				return a;
+		}
+	}
+};
+
+
+
+
+
+
+
+
+

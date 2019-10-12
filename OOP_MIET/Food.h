@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 
 struct Food {
@@ -13,7 +13,7 @@ struct Food {
 	double cost;
 
 	bool Empty() { return fam=="" && type == 0 && weight == 0 && count == 0 && cost == 0.00; }
-	//Сериализация
+	//РЎРµСЂРёР°Р»РёР·Р°С†РёСЏ
 	template<class Archive>
 	void serialize(Archive & archive) {
 		archive(fam, type, weight, count, cost);

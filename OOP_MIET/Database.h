@@ -1,25 +1,25 @@
-#pragma once
+п»ї#pragma once
 #include "Mail.h"
 #include "FileIO.h"
 #include <vector>
 #include <algorithm>
 
-//Шаблонный класс - база данных для элементов различных типов, реализующая некоторые
-//функции доступа и поиска.
+//РЁР°Р±Р»РѕРЅРЅС‹Р№ РєР»Р°СЃСЃ - Р±Р°Р·Р° РґР°РЅРЅС‹С… РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ СЂР°Р·Р»РёС‡РЅС‹С… С‚РёРїРѕРІ, СЂРµР°Р»РёР·СѓСЋС‰Р°СЏ РЅРµРєРѕС‚РѕСЂС‹Рµ
+//С„СѓРЅРєС†РёРё РґРѕСЃС‚СѓРїР° Рё РїРѕРёСЃРєР°.
 template <class ItemType>
 class Database {
 public:
-	//Конструкторы и деструктор
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ Рё РґРµСЃС‚СЂСѓРєС‚РѕСЂ
 	Database() = default;
-	//Конструктор для создания amount копий item объекта типа ItemType в базе данных.
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ amount РєРѕРїРёР№ item РѕР±СЉРµРєС‚Р° С‚РёРїР° ItemType РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С….
 	Database(const size_t& amount, const ItemType& item) : data(amount, item) { }
    ~Database() = default;
 	Database(const Database& rhs) = default;
 
-	//Функция добавления объектов в базу данных
+	//Р¤СѓРЅРєС†РёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ РѕР±СЉРµРєС‚РѕРІ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…
 	void Add(const ItemType& item) { data.emplace_back(item); }
-	//Универсальная функция поиска в базе по предикату pred, принимающая функцию предиката
-	//возвращающая найденные или пустой объект, хранящийся в базе.
+	//РЈРЅРёРІРµСЂСЃР°Р»СЊРЅР°СЏ С„СѓРЅРєС†РёСЏ РїРѕРёСЃРєР° РІ Р±Р°Р·Рµ РїРѕ РїСЂРµРґРёРєР°С‚Сѓ pred, РїСЂРёРЅРёРјР°СЋС‰Р°СЏ С„СѓРЅРєС†РёСЋ РїСЂРµРґРёРєР°С‚Р°
+	//РІРѕР·РІСЂР°С‰Р°СЋС‰Р°СЏ РЅР°Р№РґРµРЅРЅС‹Рµ РёР»Рё РїСѓСЃС‚РѕР№ РѕР±СЉРµРєС‚, С…СЂР°РЅСЏС‰РёР№СЃСЏ РІ Р±Р°Р·Рµ.
 	template <class Func>
 	ItemType Find(Func pred) {
 		auto found = find_if(data.begin(), data.end(), pred);
@@ -28,29 +28,29 @@ public:
 
 		return *found;
 	}
-	//Универсальная функция фильтра по критерию возвращающая отфильтрованный Database
-	//объект.
+	//РЈРЅРёРІРµСЂСЃР°Р»СЊРЅР°СЏ С„СѓРЅРєС†РёСЏ С„РёР»СЊС‚СЂР° РїРѕ РєСЂРёС‚РµСЂРёСЋ РІРѕР·РІСЂР°С‰Р°СЋС‰Р°СЏ РѕС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅС‹Р№ Database
+	//РѕР±СЉРµРєС‚.
 	template <class Func>
 	Database<ItemType> Filter(Func Criterion) {
 		Database<ItemType> new_data;
-		std::for_each(begin(data), end(data), [&new_data, Criterion](const ItemType& it) { if (Criterion(it)) new_data.Add(it);  });
+		std::for_each(begin(data), end(data), [&new_data, &Criterion](const ItemType& it) { if (Criterion(it)) new_data.Add(it);  });
 
 		return new_data;
 	}
-	//Функция принимает предикат по которому будем выбирать критерий сортировки, сортирует Database объект.
+	//Р¤СѓРЅРєС†РёСЏ РїСЂРёРЅРёРјР°РµС‚ РїСЂРµРґРёРєР°С‚ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ Р±СѓРґРµРј РІС‹Р±РёСЂР°С‚СЊ РєСЂРёС‚РµСЂРёР№ СЃРѕСЂС‚РёСЂРѕРІРєРё, СЃРѕСЂС‚РёСЂСѓРµС‚ Database РѕР±СЉРµРєС‚.
 	template <class Func>
 	void Sort(Func pred) { std::sort(begin(data), end(data), pred); }
 
 
-	//Определяем оператор доступа по индексу.
+	//РћРїСЂРµРґРµР»СЏРµРј РѕРїРµСЂР°С‚РѕСЂ РґРѕСЃС‚СѓРїР° РїРѕ РёРЅРґРµРєСЃСѓ.
 	ItemType& operator[](const size_t& index) {
 		return data[index];
 	}
-	//Функции состояния
+	//Р¤СѓРЅРєС†РёРё СЃРѕСЃС‚РѕСЏРЅРёСЏ
 	size_t Size() { return data.size(); }
 	bool Empty() { return data.empty(); }
 
-	//Функция сериализации
+	//Р¤СѓРЅРєС†РёСЏ СЃРµСЂРёР°Р»РёР·Р°С†РёРё
 	template<class Archive>
 	void serialize(Archive & archive) {
 		archive(data);

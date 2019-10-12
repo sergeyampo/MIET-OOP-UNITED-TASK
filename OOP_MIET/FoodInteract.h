@@ -5,33 +5,34 @@
 #include <iostream>
 #include <string>
 
-//Пользовательский класс взаимодействий и диалогов
+//РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РєР»Р°СЃСЃ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёР№ Рё РґРёР°Р»РѕРіРѕРІ
 class FoodInteract {
 public:
 	FoodInteract() = delete;
 	~FoodInteract() = delete;
 
-	//Общая функция ввода всех полей
+	//РћР±С‰Р°СЏ С„СѓРЅРєС†РёСЏ РІРІРѕРґР° РІСЃРµС… РїРѕР»РµР№
 
 	static Food InputData() {
 		Food Buffer;
 		std::cout << "enter fam" << "\n";
-		Buffer.fam = EnterLetters();
+		Buffer.fam = CorrectInput::EnterSym();
 		std::cout << "enter type" << "\n";
-		Buffer.type = EnterInt();
+		Buffer.type = CorrectInput::EnterIntNum();
 		std::cout << "enter wight" << "\n";
-		Buffer.weight = EnterDouble();
+		Buffer.weight = CorrectInput::EnterDoubleNum();
 		std::cout << "enter count" << "\n";
-		Buffer.count = EnterInt();
+		Buffer.count = CorrectInput::EnterIntNum();
 		std::cout << "enter cost" << "\n";
-		Buffer.cost = EnterDouble();
+		Buffer.cost = CorrectInput::EnterDoubleNum();
 		return Buffer;
-		//Вызываем InputIndex(), InputRecAdress() ...
-		//Если вернули false значит всё плохо вызываем их ещё раз
-		//Чистим поток и говорим пользователю ввести ещё раз
+		//Р’С‹Р·С‹РІР°РµРј InputIndex(), InputRecAdress() ...
+		//Р•СЃР»Рё РІРµСЂРЅСѓР»Рё false Р·РЅР°С‡РёС‚ РІСЃС‘ РїР»РѕС…Рѕ РІС‹Р·С‹РІР°РµРј РёС… РµС‰С‘ СЂР°Р·
+	    //Р§РёСЃС‚РёРј РїРѕС‚РѕРє Рё РіРѕРІРѕСЂРёРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РІРІРµСЃС‚Рё РµС‰С‘ СЂР°Р·
 
 	}
 	
+	//Р¤СѓРЅРєС†РёСЏ РІС‹РІРѕРґР°
 	static void OutputData(Food Buffer){
 		cout << Buffer.fam << "\t" << Buffer.type << "\t" << Buffer.weight << "\t" << Buffer.count <<"\t"<<Buffer.cost <<"\t" << "\n";;
 	}
@@ -39,32 +40,32 @@ public:
 
 	static auto GetFindCritery() {
 
-		std::string buffer = EnterLetters();
+		std::string buffer = CorrectInput::EnterSym();
 		return [buffer](Food m) { return m.fam == buffer; };
 
-		//если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFindCritery();
+		//РµСЃР»Рё РїРѕ РёРЅРґРµРєСЃСѓ С‚Рѕ return [](Food m) { return m.index == РІРІРµРґС‘РЅРЅС‹Р№ РёРЅРґРµРєСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј };
+	    //Р•СЃР»Рё РІРµСЂРЅСѓР»Рё РІСЃС‘ РїР»РѕС…Рѕ Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ СЃРјРѕРі РІС‹Р±СЂР°С‚СЊ РјРµР¶РґСѓ 1 Рё 2 РЅР°Р¶Р°РІ 15
+	    //Р§РёСЃС‚РёРј РїРѕС‚РѕРє Рё РіРѕРІРѕСЂРёРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РІРІРµСЃС‚Рё РµС‰С‘ СЂР°Р·
+	    //РўРѕ РµСЃС‚СЊ РІС‹Р·С‹РІР°РµРј СЃР°РјСѓ СЃРµР±СЏ return GetFindCritery();
 	}
 
 
 	static auto GetFilterCritery() {
 
-		unsigned int buffer = EnterInt();
+		unsigned int buffer = CorrectInput::EnterIntNum();
 		return [buffer](Food m) { return m.type == buffer; };
 
-		//Просим выбрать критерий фильтра и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите фильтровать, по имени
-		//По индексу"
-		//Если например по имени делаем
-	   //return [](Food m) { return m.name == "введённое имя пользователем" };
-	   //если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFilterCritery();
-	   //Всё аналогично
+		//РџСЂРѕСЃРёРј РІС‹Р±СЂР°С‚СЊ РєСЂРёС‚РµСЂРёР№ С„РёР»СЊС‚СЂР° Рё РІРѕР·РІСЂР°С‰Р°РµРј
+		//Р»СЏРјР±РґР° С„СѓРЅРєС†РёСЋ - РїСЂРµРґРёРєР°С‚.
+		//"Р’С‹Р±РµСЂРёС‚Рµ РєР°Рє РІС‹ С…РѕС‚РёС‚Рµ С„РёР»СЊС‚СЂРѕРІР°С‚СЊ, РїРѕ РёРјРµРЅРё
+		//РџРѕ РёРЅРґРµРєСЃСѓ"
+		//Р•СЃР»Рё РЅР°РїСЂРёРјРµСЂ РїРѕ РёРјРµРЅРё РґРµР»Р°РµРј
+		//return [](Food m) { return m.name == "РІРІРµРґС‘РЅРЅРѕРµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј" };
+		//РµСЃР»Рё РїРѕ РёРЅРґРµРєСЃСѓ С‚Рѕ return [](Food m) { return m.index == РІРІРµРґС‘РЅРЅС‹Р№ РёРЅРґРµРєСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј };
+		//Р•СЃР»Рё РІРµСЂРЅСѓР»Рё РІСЃС‘ РїР»РѕС…Рѕ Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ СЃРјРѕРі РІС‹Р±СЂР°С‚СЊ РјРµР¶РґСѓ 1 Рё 2 РЅР°Р¶Р°РІ 15
+		//Р§РёСЃС‚РёРј РїРѕС‚РѕРє Рё РіРѕРІРѕСЂРёРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РІРІРµСЃС‚Рё РµС‰С‘ СЂР°Р·
+		//РўРѕ РµСЃС‚СЊ РІС‹Р·С‹РІР°РµРј СЃР°РјСѓ СЃРµР±СЏ return GetFilterCritery();
+		//Р’СЃС‘ Р°РЅР°Р»РѕРіРёС‡РЅРѕ
 	}
 	template <class Func>
 	static void GetSortCritery() {
