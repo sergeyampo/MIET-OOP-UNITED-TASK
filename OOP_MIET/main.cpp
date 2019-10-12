@@ -5,7 +5,7 @@
 #include "InteractDB.h"
 #include "FoodInteract.h"
 #include "MailInteract.h"
-//#include "StudentInteract.h"
+#include "StudentInteract.h"
 #include "InteractDB.h"
 
 #include <string>
