@@ -4,7 +4,8 @@
 #include <string>
 #include "Student.h"
 
-//Каждый себе делает такой класс типо ShopInteract, CafeInteract, SexInteract
+using namespace std;
+
 class StudentInteract {
 public:
 	StudentInteract() = delete;
@@ -13,79 +14,58 @@ public:
 	//Общая функция ввода всех полей
 	static Student InputData() {
 		Student Buffer;
-		std::cout << "Enter surname " << std::endl;
+		string input;
 
-		//Cделать ввод на той же строке, где выводится просьба о вводе.
+		cout << "Enter surname: ";
+		getline(std::cin, Buffer.surname);
 
+		cout << "\nEnter name: ";
+		getline(std::cin, Buffer.name);
 
+		cout << "\nEnter faculty: ";
+		getline(std::cin, Buffer.faculty);
 
+		cout << "\nEnter group: ";
+		Buffer.group = CorrectInput::EnterIntNum();
+		ClearCin(std::cin);
 
-		std::cout << "enter index" << std::endl;
-		Buffer.index = EnterIntNum();
-		std::cout << "enter reciver_adresss" << endl;
-		Buffer.reciever_adress = EnterSym();
-		cout << "enter reciver_name" << endl;
-		Buffer.reciever_name = EnterSym();
-		cout << "enter sender_adresss" << endl;
-		Buffer.sender_adress = EnterSym();
-		cout << "enter sender_name" << endl;
-		Buffer.sender_name = EnterSym();
-		cout << "enter cost" << endl;
-		Buffer.cost = EnterDoubleNum();
 		return Buffer;
-		//Вызываем InputIndex(), InputRecAdress() ...
-		//Если вернули false значит всё плохо вызываем их ещё раз
-		//Чистим поток и говорим пользователю ввести ещё раз
-		//То есть вызываем саму себя return InputData();
 	}
 
-	template <class Func>
-	static Func GetFindCritery() {
-		//диалог выбора поля для поиска и ввода поискового запроса (string)
-		cout << "" << endl;
-
-		string buffer = EnterSym();
-		return [](Student s) { return s.surname == buffer; };
-		//Просим выбрать критерий поиска и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите искать, по имени
-		//По индексу"
-		//Если например по имени делаем
-		//return [](Mail m) { return m.name == "введённое имя пользователем" };
-		//если по индексу то return [](Mail m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFindCritery();
+	static auto GetFindCritery() {
+		cout << "Type the surname to find: ";
+		std::string buffer;
+		ClearCin(std::cin);
+		getline(std::cin, buffer);
+		return [&buffer](Student m) { return m.surname == buffer; };
 	}
 
-	template <class Func>
-	static Func GetFilterCritery() {
-		unsigned int buffer = EnterIntNum();
-		return [](Student s) { return s.group == buffer; };
-		//Просим выбрать критерий фильтра и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите фильтровать, по имени
-		//По индексу"
-		//Если например по имени делаем
-		//return [](Mail m) { return m.name == "введённое имя пользователем" };
-		//если по индексу то return [](Mail m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFilterCritery();
-	   //Всё аналогично
+	static auto GetFilterCritery() {
+		cout << "Type the group for filtering: ";;
+		unsigned int buffer = CorrectInput::EnterIntNum();
+		return [&buffer](Student m) { return m.group == buffer; };
 	}
-	template <class Func>
-	static void GetSortCritery() {
-		return [](Mail x, Mail y) { return x.reciever_name < y.reciever_name; }
-			//Всё тоже самое
+
+	//Add smart string comparing
+	static auto GetSortCritery() {
+		cout << "Sorting by increasing cost.\n";
+		return [](Student x, Student y) { return x.surname + x.name < y.surname + y.name; };
 	}
+	
+
+	static void OutputData(Student buffer) {
+		cout << buffer.surname << "\t" << buffer.name << "\t" << buffer.faculty << "\t" << buffer.group << "\n";
+
+	}
+
+	static const std::string& GetFilename() {
+		return filename;
+	}
+
+	static void PrintColumnNames() {
+		std::cout << "Surname\t" << "Name\t" << "Faculty\t" << "Group\t";
+	}
+
+private:
+	inline static const std::string filename = "DatabaseOfStudents.cereal";
 };
-
-//Как вызывать, это всё в main.
-Database<Mail> db;
-InteractDB::AddElement(db);
-Database<Mail> new_db = InteractDB::FilterElements(db);
-Mail found = InteractDB::FindElement(new_db);
-InteractDB::SortElements(new_db);
-
-
