@@ -39,7 +39,7 @@ public:
 
 
 	static auto GetFindCritery() {
-
+		std::cout << "Find using Fam.\n";
 		std::string buffer = CorrectInput::EnterSym();
 		return [buffer](Food m) { return m.fam == buffer; };
 
