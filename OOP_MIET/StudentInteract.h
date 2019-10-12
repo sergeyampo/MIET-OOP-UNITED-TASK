@@ -3,12 +3,9 @@
 #include <iostream>
 #include <string>
 #include "Student.h"
-#include "FileIO.h"
-#include "CorrectInput.h"
 
 using namespace std;
 
-//Каждый себе делает такой класс типо ShopInteract, CafeInteract, SexInteract
 class StudentInteract {
 public:
 	StudentInteract() = delete;

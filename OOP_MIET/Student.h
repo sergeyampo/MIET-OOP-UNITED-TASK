@@ -7,6 +7,12 @@ struct Student {
 	Student() = default;
 	bool Empty() { return surname.empty() && name.empty() && faculty.empty() && group == 0; }
 
+	//Сериализация
+	template<class Archive>
+	void serialize(Archive & archive) {
+		archive(surname, name, faculty, group);
+	}
+
 	std::string surname;
 	std::string name;
 	std::string faculty;
