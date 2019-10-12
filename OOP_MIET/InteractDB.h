@@ -26,6 +26,7 @@ namespace InteractDB {
 			"Enter: ";
 		int amount = CorrectInput::EnterIntNum();
 		system("CLS");
+		ClearCin(cin);
 
 		for (int i = 0; i < amount; ++i){
 			std::cout << "Enter " << i + 1 << " element: " << "\n";
@@ -131,8 +132,11 @@ namespace InteractDB {
 				std::cout << "The " + database_dump_namefile + " file was successfully saved.\n";
 			}
 			catch (domain_error e) {
+				FileIO file(database_dump_namefile);
+				file.Create(database_dump_namefile);
+				file.WriteBinary(db, database_dump_namefile);
 				cout << e.what() << endl;
-				return SaveDb<InteractType>(db);
+				return;
 			}
 		}
 		else if (choice == 'N') {
