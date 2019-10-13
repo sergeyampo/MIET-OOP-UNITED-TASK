@@ -1,10 +1,10 @@
 ﻿#include "Database.h"
-#include "Mail.h"
+#include "Letter.h"
 #include "Food.h"
 #include "FileIO.h"
 #include "InteractDB.h"
 #include "FoodInteract.h"
-#include "MailInteract.h"
+#include "LetterInteract.h"
 #include "StudentInteract.h"
 #include "InteractDB.h"
 
@@ -15,8 +15,8 @@
 #include <chrono>
 #include <thread>
 
-#define InterType MailInteract	
-#define Type Mail
+#define InterType LetterInteract	
+#define Type Letter
 
 using namespace std;
 
