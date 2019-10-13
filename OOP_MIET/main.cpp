@@ -1,6 +1,7 @@
 ﻿#include "Database.h"
 #include "Mail.h"
 #include "Food.h"
+#include "Student.h"
 #include "FileIO.h"
 #include "InteractDB.h"
 #include "FoodInteract.h"
