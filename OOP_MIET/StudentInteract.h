@@ -16,16 +16,18 @@ public:
 		Student Buffer;
 		string input;
 
+		ClearCin(std::cin);
+
 		cout << "Enter surname: ";
 		getline(std::cin, Buffer.surname);
 
-		cout << "\nEnter name: ";
+		cout << "Enter name: ";
 		getline(std::cin, Buffer.name);
 
-		cout << "\nEnter faculty: ";
+		cout << "Enter faculty: ";
 		getline(std::cin, Buffer.faculty);
 
-		cout << "\nEnter group: ";
+		cout << "Enter group: ";
 		Buffer.group = CorrectInput::EnterIntNum();
 		ClearCin(std::cin);
 
@@ -49,13 +51,11 @@ public:
 	//Add smart string comparing
 	static auto GetSortCritery() {
 		cout << "Sorting by increasing cost.\n";
-		return [](Student x, Student y) { return x.surname + x.name < y.surname + y.name; };
+		return [](Student x, Student y) { return (x.surname < y.surname) || (x.surname == y.surname && x.name < y.name); };
 	}
-	
 
 	static void OutputData(Student buffer) {
-		cout << buffer.surname << "\t" << buffer.name << "\t" << buffer.faculty << "\t" << buffer.group << "\n";
-
+		cout << buffer.faculty << "\t" << buffer.group << "\t" << buffer.surname << "\t" << buffer.name << "\n";
 	}
 
 	static const std::string& GetFilename() {
@@ -63,7 +63,11 @@ public:
 	}
 
 	static void PrintColumnNames() {
-		std::cout << "Surname\t" << "Name\t" << "Faculty\t" << "Group\t";
+		std::cout << "Faculty\t" << "Group\t" << "Surname\t" << "Name\n";
+	}
+
+	static auto GetTableHeader() {
+		return "Faculty Group Surname Name\n";
 	}
 
 private:
