@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Database.h"
 #include "CorrectInput.h"
-#include "MailInteract.h"
+#include "LetterInteract.h"
 #include <iostream>
 
 //Универсальный интерфейс работы с базой данных
