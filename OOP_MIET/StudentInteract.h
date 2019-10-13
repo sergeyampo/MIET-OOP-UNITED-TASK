@@ -38,13 +38,13 @@ public:
 		std::string buffer;
 		ClearCin(std::cin);
 		getline(std::cin, buffer);
-		return [&buffer](Student m) { return m.surname == buffer; };
+		return [buffer](Student m) { return m.surname == buffer; };
 	}
 
 	static auto GetFilterCritery() {
 		cout << "Type the group for filtering: ";;
 		unsigned int buffer = CorrectInput::EnterIntNum();
-		return [&buffer](Student m) { return m.group == buffer; };
+		return [buffer](Student m) { return m.group == buffer; };
 	}
 
 	static auto GetSortCritery() {
