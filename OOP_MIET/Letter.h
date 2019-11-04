@@ -69,7 +69,7 @@ class Letter1 : public Letter {
 		archive(cereal::base_class<Letter>(this), weight);
 	}
 
-	std::ostream& Write override(std::ostream& out) {
+	std::ostream& Write(std::ostream& out) override {
 		out = Letter::Write(out);
 		out << weight << "\n";
 
@@ -92,14 +92,7 @@ class Letter2 : public Letter {
 
   bool Empty() const override { return Letter::Empty() && cost == 0.00; }
 
-  std::ostream& Write override(std::ostream& out) {
-	  out = Letter::Write(out);
-	  out << weight << "\n";
-
-	  return out;
-  }
-
-  std::ostream& Write override(std::ostream& out) {
+  std::ostream& Write(std::ostream& out) override {
 	  out = Letter::Write(out);
 	  out << cost << "\n";
 
