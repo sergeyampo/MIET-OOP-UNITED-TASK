@@ -130,14 +130,85 @@ namespace InteractDB {
 	//СОЗДАНИЕ ФАЙЛА
 	
 	template <class InteractType, class ItemType>
-	void CreateFile(const Database<ItemType>& db, fs::path database_dump_path) //принимает PathIO
+	void CreateFile(const Database<ItemType>& db, PathIO pathes) //принимает PathIO
 	{		
-		PathIO path;
-		fs::path ps= path.Createfile(database_dump_path);
-		FileIO file(ps);
-		file.WriteBinary(db, ps);
+		fs::path current_file = pathes.CreateFileName();
+			FileIO file(ps);
+			file.WriteBinary(db, current_file);
+			pathes.AddPath(current_file);
+							   
+	}
+	template <class InteractType, class ItemType>
+	Database<ItemType> ChooseFirstFile(PathIO pathes){
+		if (pathes.Size != 0)
+		{
+			cout << "Choose file to restore\n:"
+		    cout << "0 - Get Last Save\n";
+			pathes.ListPathes();
+			cout << pathes.Size() + 1 << "- CreateFile\n";
+			cout << "Enter your choice: ";
+			int n;
+			n = CorrectInput::EnterIntNum();
+			if (n == 0)
+			{
+				pathes.SetCurrentFile = pathes.GetLast();
+				return RestoreDb(pathes.GetLast());
+			}
+			else if (n == pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile = "";
+				return new Database<ItemType>;
+			}
+			else if (n < pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile = pathes[n - 1];
+				return RestoreDb(pathes[n - 1]);
+			}
+			else
+				Database<ItemType> ChooseFirstFile(pathes);		
+		}
+		else
+		{
+			pathes.SetCurrentFile = "";
+			return new Database<ItemType>;
+		}
 	}
 
+	template <class InteractType, class ItemType>
+	Database<ItemType> ChooseFile(PathIO pathes, Database<ItemType> db) {
+		if (pathes.Size != 0)
+		{
+			cout << "Choose file to restore\n:"
+				cout << "0 - GO back\n";
+			pathes.ListPathes();
+			cout << pathes.Size() + 1 << "- CreateFile\n";
+			cout << "Enter your choice: ";
+			int n;
+			n = CorrectInput::EnterIntNum();
+			if (n == 0)
+			{
+				return db;
+			}
+			else if (n == pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile = "";
+				return new Database<ItemType>;
+			}
+			else if (n < pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile = pathes[n - 1];
+				return RestoreDb(pathes[n - 1]);
+			}
+			else			
+			Database<ItemType> ChooseFirstFile(pathes, db);
+			
+		}
+		else {
+			pathes.SetCurrentFile = "";
+			return new Database<ItemType>;
+		}
+
+	}
 
 	//сохранение бд в файл
 	template <class InteractType, class ItemType>

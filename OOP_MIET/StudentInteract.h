@@ -66,6 +66,11 @@ public:
 		std::cout << "Surname\t" << "Name\t" << "Faculty\t" << "Group\t\n";
 	}
 
+	string GetFolderName()
+	{
+		return "Student";
+	}
+
 private:
 	inline static const std::string filename = "DatabaseOfStudents.cereal";
 };

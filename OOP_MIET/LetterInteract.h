@@ -10,6 +10,7 @@ public:
 	LetterInteract() = delete;
    ~LetterInteract() = delete;
 
+
 	//Общая функция ввода всех полей
 	static Letter InputData() {
 		Letter Buffer;
@@ -72,6 +73,11 @@ public:
 
 	static void PrintColumnNames() {
 		std::cout << "Index\t" << "Rec. Adress\t" << "Rec. Name\t" << "Sen. Adress\t" << "Sen. Name\t" << "Cost\n";
+	}
+
+	string GetFolderName()
+	{
+		return "Letter";
 	}
 
   private:

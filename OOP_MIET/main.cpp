@@ -28,7 +28,7 @@ char ChooseFirstAction() {
 		"3)Searching\n" <<
 		"4)Filter\n" <<
 		"5)Sort\n"
-		"6)Exit\n" <<
+		"6)Choose another File\n" <<
 		"Enter number: ";
 	char choice;
 	cin >> choice;
@@ -52,7 +52,9 @@ istream& WaitEnter(istream& in, ostream& out) {
 int main() {
 	//Восстановление базы данных с файла
 	Database<Type> db;
-	db = InteractDB::RestoreDbWith<InterType, Type>();
+	PathIO FilePathes;
+	FilePathes.CreateVector();
+	db = InteractDB::ChooseFirstFile(FilePathes);	
 
 	//Циклический запрос дейстаия
 	bool is_over = false;
@@ -84,6 +86,12 @@ int main() {
 					cout << "Filtered Elements:\n";
 					//Do you want to save...
 					InteractDB::PrintTable<InterType>(new_db);
+					cout << "Do you want to save...\n"
+						"Y-YES,another sym NO";
+					char chs;
+					cib >> chs;
+					if (chs == "Y" or chs == "y")
+						InteractDB::CreateFile(new_db, FilePathes);											   						 					  			
 				}
 			}
 			else
@@ -101,7 +109,14 @@ int main() {
 				cout << "There's nothing to sort!\n";
 			WaitEnter(cin, cout);
 		}
-		else if(act == '6'){
+		else if (act == '6') {			
+				cout << "Do you want to save current File";
+				InteractDB::SaveData(db,FilePathes.GetCurrentFile());
+				db=InteractDB::ChooseFile(db);
+			
+		}
+
+		else if(act == '7'){
 			if(!db.Empty())
 			  InteractDB::SaveDb<InterType>(db);
 			

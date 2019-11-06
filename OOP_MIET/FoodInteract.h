@@ -102,6 +102,11 @@ public:
 			GetSortCritery();
 		}
 
+		string GetFolderName()
+		{
+			return "Food";
+		}
+
 	}
 
 };
