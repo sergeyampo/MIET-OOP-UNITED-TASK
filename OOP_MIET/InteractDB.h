@@ -3,6 +3,8 @@
 #include "CorrectInput.h"
 #include "LetterInteract.h"
 #include <iostream>
+#include<Pathes.h>
+#include <FileIO.h>
 
 //Универсальный интерфейс работы с базой данных
 namespace InteractDB {
@@ -59,6 +61,7 @@ namespace InteractDB {
 
 		return found;
 	}
+	
 
 	//Диалог фильтра элементов - возвращаемый базу данных элементы которых
 	//удовлетворяют предикату InteractType::GetFilterCritery.
@@ -82,8 +85,7 @@ namespace InteractDB {
 	//Диалог восстановления базы данных из предыдущего сохранения, файла с именем
 	//database_dump_namefile. Вызываем RestoreDbWith<Food>()
 	template <class InteractType, class ItemType>
-	Database<ItemType> RestoreDbWith() {
-		const std::string database_dump_namefile = InteractType::GetFilename();
+	Database<ItemType> RestoreDbWith(fs::path database_dump_namefile) {		
 		cout << "Do you want to restore data from the last save?\n"
 			    "\'Y\' - yes, \'N\' - no\n"
 			    "Enter: ";
@@ -114,11 +116,62 @@ namespace InteractDB {
 		return rs_db;
 	}
 
+	template <class InteractType, class ItemType>
+	Database<ItemType> RestoreDb(fs::path database_dump_namefile)
+	{
+		Database<ItemType> rs_db;
+		if (database_dump_namefile != "")
+		{
+			FileIO file(database_dump_namefile);
+			rs_db = file.ReadBinary(rs_db, database_dump_namefile);
+		}
+		return rs_db;
+	}
+	//СОЗДАНИЕ ФАЙЛА
+	
+	template <class InteractType, class ItemType>
+	void CreateFile(const Database<ItemType>& db, fs::path database_dump_path)
+	{		
+		PathIO path;
+		fs::path ps= path.Createfile(database_dump_path);
+		FileIO file(ps);
+		file.WriteBinary(db, ps);
+	}
+
+
+	//сохранение бд в файл
+	template <class InteractType, class ItemType>
+	void SaveData(const Database<ItemType>& db, fs::path database_dump_namefile)
+	{
+		cout << "Do you want to save data to file?\n"
+			"\'Y\' - yes, \'N\' - no\n"
+			"Enter: ";
+		char choice;
+		cin >> choice;
+		if (choice == 'Y') {
+			if (database_dump_namefile != "")
+			{
+				FileIO file(database_dump_namefile);
+				file.WriteBinary(db, database_dump_namefile);
+			}
+			else
+				CreateFile();
+		}
+		else if (choice == 'N') {
+			return;
+		}
+		else {
+			ClearCin(cin);
+			cout << "Incorrect input, try again!\n";
+			return SaveData<InteractType>(db, database_dump_namefile);
+		}
+	}
+
+	
 	//Диалог сохранения базы данных в файл с именем
 	//database_dump_namefile.
 	template <class InteractType, class ItemType>
-	void SaveDb(const Database<ItemType>& db) {
-		const std::string database_dump_namefile = InteractType::GetFilename();
+	void SaveDb(const Database<ItemType>& db ,fs::path database_dump_namefile) {
 		cout << "Do you want to save data to file?\n"
 			"\'Y\' - yes, \'N\' - no\n"
 			"Enter: ";
