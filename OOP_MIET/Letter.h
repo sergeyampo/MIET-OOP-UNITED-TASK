@@ -5,7 +5,7 @@
 
 class Letter {
   public:
-	Letter(const unsigned int& ind, const Man& rec, const Man& sen) : index(ind), reciever(rec), sender(sen) { }
+	Letter(const unsigned int& ind, const Man& rec, const Man& sen, const double& cst) : index(ind), reciever(rec), sender(sen), cost(cst) { }
 	Letter() = default;
     virtual ~Letter() = default;
     Letter(const Letter&) = default;
@@ -48,10 +48,14 @@ class Letter {
 	std::string GetSenderName() const noexcept { return sender.GetName(); }
 	void SetSenderName(const std::string& arg) { sender.SetName(arg); }
 
+	virtual double GetCost() const noexcept { return cost; }
+	virtual void SetCost(const double& arg) { cost = arg; }
+
   private:
    unsigned int index;
    Man reciever;
    Man sender;
+   double cost;
 };
 
 //Письмо, имеющее массу
@@ -59,7 +63,7 @@ class Letter1 : public Letter {
 	Letter1() : Letter() {}
    ~Letter1() = default;
     Letter1(const Letter1& l) : Letter(l) { }
-	Letter1(const unsigned int& ind, const Man& rec, const Man& sen, const double& wght) : Letter(ind, rec, sen), weight(wght) { }
+	Letter1(const unsigned int& ind, const Man& rec, const Man& sen, const double& wght, const double& cst) : Letter(ind, rec, sen, cst), weight(wght) { }
 	
 	bool Empty() const override { return Letter::Empty() && weight == 0.00; }
 
@@ -70,7 +74,7 @@ class Letter1 : public Letter {
 	}
 
 	std::ostream& Write(std::ostream& out) override {
-		out = Letter::Write(out);
+		Letter::Write(out);
 		out << weight << "\n";
 
 		return out;
@@ -93,14 +97,14 @@ class Letter2 : public Letter {
   bool Empty() const override { return Letter::Empty() && cost == 0.00; }
 
   std::ostream& Write(std::ostream& out) override {
-	  out = Letter::Write(out);
+	  Letter::Write(out);
 	  out << cost << "\n";
 
 	  return out;
   }
 
-  double GetCost() const noexcept { return cost; }
-  void SetCost(const double& arg) { cost = arg; }
+  double GetCost() const noexcept override { return cost; }
+  void SetCost(const double& arg) override { cost = arg; }
 
   private:
 	  double cost;
