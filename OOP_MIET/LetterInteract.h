@@ -48,7 +48,7 @@ public:
 		if (string buffer; getline(std::cin, buffer))
 			cmp.SetAddress(buffer);
 
-		return [cmp](Letter m) { return m == cmp; };
+		return [cmp](Letter m) { return m.GetSenderAddress() == cmp.GetAddress(); };
 	}
 
 	static auto GetFilterCritery() {
