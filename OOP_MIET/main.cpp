@@ -82,6 +82,7 @@ int main() {
 			if (!db.Empty()) {
 				if (auto new_db = InteractDB::FilterElements<InterType>(db); !new_db.Empty()) {
 					cout << "Filtered Elements:\n";
+					//Do you want to save...
 					InteractDB::PrintTable<InterType>(new_db);
 				}
 			}

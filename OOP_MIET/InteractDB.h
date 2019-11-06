@@ -130,7 +130,7 @@ namespace InteractDB {
 	//СОЗДАНИЕ ФАЙЛА
 	
 	template <class InteractType, class ItemType>
-	void CreateFile(const Database<ItemType>& db, fs::path database_dump_path)
+	void CreateFile(const Database<ItemType>& db, fs::path database_dump_path) //принимает PathIO
 	{		
 		PathIO path;
 		fs::path ps= path.Createfile(database_dump_path);
