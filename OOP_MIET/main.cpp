@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <chrono>
 #include <thread>
+#include <memory>
 
 #define InterType LetterInteract	
 #define Type Letter
@@ -51,8 +52,8 @@ istream& WaitEnter(istream& in, ostream& out) {
 
 int main() {
 	//Восстановление базы данных с файла
-	Database<Type> db;
-	db = InteractDB::RestoreDbWith<InterType, Type>();
+	Database<shared_ptr<Type>> db;
+	db = InteractDB::RestoreDbWith<InterType, shared_ptr<Type>>();
 
 	//Циклический запрос дейстаия
 	bool is_over = false;
@@ -68,7 +69,7 @@ int main() {
 		}
 		else if (act == '3') {
 			if (!db.Empty()) {
-				if (auto found_el = InteractDB::FindElement<InterType>(db); !found_el.Empty()) {
+				if (auto found_el = InteractDB::FindElement<InterType>(db); !found_el->Empty()) {
 					cout << "Found element:\n";
 					InterType::OutputData(found_el);
 				}
