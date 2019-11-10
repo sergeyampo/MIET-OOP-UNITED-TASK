@@ -75,7 +75,7 @@ public:
 		std::cout << "Index\t" << "Rec. Adress\t" << "Rec. Name\t" << "Sen. Adress\t" << "Sen. Name\t" << "Cost\n";
 	}
 
-	string GetFolderName()
+	static string GetFolderName()
 	{
 		return "Letter";
 	}

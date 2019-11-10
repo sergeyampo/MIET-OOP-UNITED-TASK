@@ -28,12 +28,19 @@ class PathIO{
 public:	
 	 PathIO() = default;
 	~PathIO() = default;
+	PathIO Set(PathIO secpat){
+		ps = secpat.ps;
+		current = secpat.current;
+		currentFile = secpat.currentFile;
+
+	}
 
 	template <class InteractType>
 	void CreateVector(){ //Другое название
 		fs::path curr_path = fs::current_path();
 		curr_path = curr_path.parent_path();	
-		curr_path /= InteractType.GetFolderName();
+		string buffer = InteractType::GetFolderName();
+		curr_path /= buffer;
 		if (!fs::exists(curr_path))
 			fs::create_directory(curr_path);
 		current = curr_path;
@@ -49,7 +56,7 @@ public:
 	    //Если папка пуста, то скип, иначе выполняем функцию
 		//Не создавать пустой файл!
 		//Вынести общение с пользователем в другую функцию
-		cout << "Choose file to restore\n:"
+		cout << "Choose file to restore\n:";
 		cout << "0 - Get Last Save\n";
 		for (int i = 0; i < ps.size(); i++)
 			cout << i+1<<" - " << ps[i].filename() << "\n";		
@@ -59,10 +66,10 @@ public:
 		cin >> n;		
 		if (n == 0)
 		  return GetLast();
-		if (n == ps.size()+1)
-			Createfile();
-		else 
-			return ps[n-1]
+		if (n == ps.size() + 1)
+			"";
+		else
+			return ps[n - 1];
 	}
 	fs::path Choose(fs::path pat)	{		
 		cout << "0-GoBack\n";
@@ -74,14 +81,14 @@ public:
 		cout << "enter your choise";
 		int n;
 		cin >> n;
-		if (n == 0)		{
-			return fs::path pat;
+		if (n == 0) {
+			return  pat;
 		}
-		else if (n == ps.size())		{
-			return Createfile();
+		else if (n == ps.size()+1) {
+			return "";
 		}
 		else
-			return ps[n - 1]
+			return ps[n - 1];
 	}
 	
 	void ListPathes()
@@ -102,14 +109,14 @@ public:
 		for (auto p : ps)
 			if (p == pat){
 				key = false;
-				cout<<"FIle with that name exist...Try again\n"
+				cout << "FIle with that name exist...Try again\n";
 				break;
 		    }
 		return key;
 	}
 	fs::path CreateFileName()
 	{
-		fs::path current_file = current();
+		fs::path current_file = Getcurrent();
 		cout << "Enter FileName(ONLYSTRING)";
 		string buffer = CorrectInput::EnterSym();
 		current_file /= buffer;
@@ -121,13 +128,14 @@ public:
 	{
 		currentFile = pat;
 	}
-	void GetCurrentFile(fs::path pat)
+	fs::path GetCurrentFile()
 	{
 		return currentFile;
 	}
 
 	fs::path GetLast()
 	{
+		fs::path temp;
 		//auto newest_file = std::min_element(begin(ps), end(ps), [](fs::path x, fs::path.y){ return fs::last_write_time(x) < fs::last_time_write(y); }));
 		//return *newest_file;
 		auto LastTime = fs::last_write_time(ps[0]);
@@ -142,10 +150,18 @@ public:
 		}
 		return temp;
 	}
-	size_t Size() { return ps.size(); }
-	ItemType& operator[](const size_t& index) {
+	
+	size_t Size() { return ps.size(); }	
+	fs::path& operator[](const size_t& index) {
 		return ps[index];
 	}
+	PathIO& operator=(PathIO secpat) {
+		ps = secpat.ps;
+		current = secpat.current;
+		currentFile = secpat.currentFile;
+		return *this;
+	}
 
+	
 };
 

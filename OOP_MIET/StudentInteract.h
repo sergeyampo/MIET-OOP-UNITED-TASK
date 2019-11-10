@@ -66,7 +66,7 @@ public:
 		std::cout << "Surname\t" << "Name\t" << "Faculty\t" << "Group\t\n";
 	}
 
-	string GetFolderName()
+	static string GetFolderName()
 	{
 		return "Student";
 	}

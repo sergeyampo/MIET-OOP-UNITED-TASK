@@ -100,13 +100,12 @@ public:
 		else
 		{
 			GetSortCritery();
-		}
+		}		
 
-		string GetFolderName()
-		{
-			return "Food";
-		}
-
+	}
+	static string GetFolderName()
+	{
+		return "Food";
 	}
 
 };

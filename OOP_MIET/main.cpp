@@ -7,6 +7,7 @@
 #include "LetterInteract.h"
 #include "StudentInteract.h"
 #include "InteractDB.h"
+#include "Pathes.h"
 
 #include <string>
 #include <iostream>
@@ -20,22 +21,25 @@
 
 using namespace std;
 
-char ChooseFirstAction() {
+char ChooseFirstAction(PathIO pat) {
 	system("CLS");
-	cout << "Choose an action:\n" <<
+	cout << "CurrentFile:"<<
+		pat.GetCurrentFile().string()<<"\n"<<
+		"Choose an action:\n" <<
 		"1)Add new element\n" <<
 		"2)Print database\n" <<
 		"3)Searching\n" <<
 		"4)Filter\n" <<
-		"5)Sort\n"
+		"5)Sort\n"<<
 		"6)Choose another File\n" <<
+		"7)Exit\n"<<
 		"Enter number: ";
 	char choice;
 	cin >> choice;
 	system("CLS");
 
-	if (choice == '1' || choice == '2' || choice == '3' || choice == '4' || choice == '5' || choice == '6') return choice;
-	else { ClearCin(cin); return ChooseFirstAction(); }
+	if (choice == '1' || choice == '2' || choice == '3' || choice == '4' || choice == '5' || choice == '6'||choice=='7') return choice;
+	else { ClearCin(cin); return ChooseFirstAction(pat); }
 
 	return '0';
 }
@@ -53,14 +57,14 @@ int main() {
 	//Восстановление базы данных с файла
 	Database<Type> db;
 	PathIO FilePathes;
-	FilePathes.CreateVector();
-	db = InteractDB::ChooseFirstFile(FilePathes);	
+	FilePathes.CreateVector<InterType>();
+	db = InteractDB::ChooseFirstFile<InterType,Type>(FilePathes);	
 
 	//Циклический запрос дейстаия
 	bool is_over = false;
 	do {
 		
-		char act = ChooseFirstAction();
+		char act = ChooseFirstAction(FilePathes);
 		if (act == '1') {
 			InteractDB::AddFewElements<InterType>(db);
 		}
@@ -89,9 +93,9 @@ int main() {
 					cout << "Do you want to save...\n"
 						"Y-YES,another sym NO";
 					char chs;
-					cib >> chs;
-					if (chs == "Y" or chs == "y")
-						InteractDB::CreateFile(new_db, FilePathes);											   						 					  			
+					cin >> chs;
+					if (chs == 'Y' || chs == 'y')
+						InteractDB::CreateFile<InterType>(new_db, FilePathes);											   						 					  			
 				}
 			}
 			else
@@ -109,16 +113,18 @@ int main() {
 				cout << "There's nothing to sort!\n";
 			WaitEnter(cin, cout);
 		}
-		else if (act == '6') {			
+		else if (act == '6') {		
+			if (!db.Empty()) {
 				cout << "Do you want to save current File";
-				InteractDB::SaveData(db,FilePathes.GetCurrentFile());
-				db=InteractDB::ChooseFile(db);
+				FilePathes=InteractDB::SaveData<InterType>(db, FilePathes);
+			}
+			db=InteractDB::ChooseFile<InterType>(FilePathes,db);
 			
 		}
 
 		else if(act == '7'){
 			if(!db.Empty())
-			  InteractDB::SaveDb<InterType>(db);
+			  InteractDB::SaveData<InterType>(db, FilePathes);
 			
 			is_over = true;
 			cout << "Waiting for closing...";

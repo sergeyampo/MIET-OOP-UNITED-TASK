@@ -3,8 +3,8 @@
 #include "CorrectInput.h"
 #include "LetterInteract.h"
 #include <iostream>
-#include<Pathes.h>
-#include <FileIO.h>
+#include"Pathes.h"
+#include "FileIO.h"
 
 //Универсальный интерфейс работы с базой данных
 namespace InteractDB {
@@ -122,27 +122,29 @@ namespace InteractDB {
 		Database<ItemType> rs_db;
 		if (database_dump_namefile != "")
 		{
-			FileIO file(database_dump_namefile);
-			rs_db = file.ReadBinary(rs_db, database_dump_namefile);
+			FileIO file(database_dump_namefile.string());
+			rs_db = file.ReadBinary(rs_db, database_dump_namefile.string());
 		}
 		return rs_db;
 	}
 	//СОЗДАНИЕ ФАЙЛА
 	
 	template <class InteractType, class ItemType>
-	void CreateFile(const Database<ItemType>& db, PathIO pathes) //принимает PathIO
+	PathIO CreateFile(const Database<ItemType>& db, PathIO &pathes) //принимает PathIO
 	{		
 		fs::path current_file = pathes.CreateFileName();
-			FileIO file(ps);
-			file.WriteBinary(db, current_file);
+			FileIO file(current_file.string());
+			file.WriteBinary(db, current_file.string());
 			pathes.AddPath(current_file);
+			return pathes;
 							   
 	}
 	template <class InteractType, class ItemType>
-	Database<ItemType> ChooseFirstFile(PathIO pathes){
-		if (pathes.Size != 0)
+	Database<ItemType> ChooseFirstFile(PathIO &pathes){
+		Database<ItemType> rs_db;
+		if (pathes.Size() != 0)
 		{
-			cout << "Choose file to restore\n:"
+			cout << "Choose file to restore\n:";
 		    cout << "0 - Get Last Save\n";
 			pathes.ListPathes();
 			cout << pathes.Size() + 1 << "- CreateFile\n";
@@ -151,34 +153,33 @@ namespace InteractDB {
 			n = CorrectInput::EnterIntNum();
 			if (n == 0)
 			{
-				pathes.SetCurrentFile = pathes.GetLast();
-				return RestoreDb(pathes.GetLast());
+				pathes.SetCurrentFile(pathes.GetLast());
+				return RestoreDb<InteractType, ItemType>(pathes.GetLast());
 			}
 			else if (n == pathes.Size() + 1)
 			{
-				pathes.SetCurrentFile = "";
-				return new Database<ItemType>;
+				pathes.SetCurrentFile("");
+				return  rs_db;
 			}
 			else if (n < pathes.Size() + 1)
 			{
-				pathes.SetCurrentFile = pathes[n - 1];
-				return RestoreDb(pathes[n - 1]);
+				pathes.SetCurrentFile (pathes[n - 1]);
+				return RestoreDb<InteractType, ItemType>(pathes[n - 1]);
 			}
 			else
-				Database<ItemType> ChooseFirstFile(pathes);		
+				 ChooseFirstFile<InteractType,ItemType>(pathes);		
 		}
 		else
 		{
-			pathes.SetCurrentFile = "";
-			return new Database<ItemType>;
+			pathes.SetCurrentFile ("");
+			return  rs_db;
 		}
 	}
 
 	template <class InteractType, class ItemType>
-	Database<ItemType> ChooseFile(PathIO pathes, Database<ItemType> db) {
-		if (pathes.Size != 0)
-		{
-			cout << "Choose file to restore\n:"
+	Database<ItemType> ChooseFile(PathIO &pathes, Database<ItemType> db) {
+		Database<ItemType> rs_db;		
+			cout << "Choose file to restore\n:";
 				cout << "0 - GO back\n";
 			pathes.ListPathes();
 			cout << pathes.Size() + 1 << "- CreateFile\n";
@@ -191,28 +192,22 @@ namespace InteractDB {
 			}
 			else if (n == pathes.Size() + 1)
 			{
-				pathes.SetCurrentFile = "";
-				return new Database<ItemType>;
+				pathes.SetCurrentFile("");
+				return rs_db;
 			}
 			else if (n < pathes.Size() + 1)
 			{
-				pathes.SetCurrentFile = pathes[n - 1];
-				return RestoreDb(pathes[n - 1]);
+				pathes.SetCurrentFile (pathes[n - 1]);
+				return RestoreDb<InteractType, ItemType>(pathes[n - 1]);
 			}
 			else			
-			Database<ItemType> ChooseFirstFile(pathes, db);
-			
-		}
-		else {
-			pathes.SetCurrentFile = "";
-			return new Database<ItemType>;
-		}
+			ChooseFile<InteractType>(pathes, db);		
 
 	}
 
 	//сохранение бд в файл
 	template <class InteractType, class ItemType>
-	void SaveData(const Database<ItemType>& db, fs::path database_dump_namefile)
+	PathIO SaveData(const Database<ItemType>& db,PathIO& pat)
 	{
 		cout << "Do you want to save data to file?\n"
 			"\'Y\' - yes, \'N\' - no\n"
@@ -220,22 +215,23 @@ namespace InteractDB {
 		char choice;
 		cin >> choice;
 		if (choice == 'Y') {
-			if (database_dump_namefile != "")
+			if (pat.GetCurrentFile() != "")
 			{
-				FileIO file(database_dump_namefile);
-				file.WriteBinary(db, database_dump_namefile);
+				FileIO file(pat.GetCurrentFile().string());
+				file.WriteBinary(db,pat.GetCurrentFile().string());
 			}
 			else
-				CreateFile();
+				pat=CreateFile<InteractType>(db,pat);
 		}
 		else if (choice == 'N') {
-			return;
+			return pat;
 		}
 		else {
 			ClearCin(cin);
 			cout << "Incorrect input, try again!\n";
-			return SaveData<InteractType>(db, database_dump_namefile);
+			return SaveData<InteractType>(db, pat);
 		}
+		return pat;
 	}
 
 	
@@ -253,7 +249,7 @@ namespace InteractDB {
 			try {
 				FileIO file(database_dump_namefile);
 				file.WriteBinary(db, database_dump_namefile);
-				std::cout << "The " + database_dump_namefile + " file was successfully saved.\n";
+				//std::cout << "The " + database_dump_namefile + " file was successfully saved.\n";
 			}
 			catch (domain_error e) {
 				FileIO file(database_dump_namefile);
