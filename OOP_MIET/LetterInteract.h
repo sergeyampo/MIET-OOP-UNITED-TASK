@@ -99,7 +99,7 @@ public:
 
 	static string GetTableHeader()
 	{
-		return "Index|Rec. Adress|Rec. Name|Sen. Adress|Sen. Name|Cost\n"
+		return "Index|Rec. Adress|Rec. Name|Sen. Adress|Sen. Name|Weight|Cost\n";
 	}
 
 	static string GetFolderName()

@@ -83,40 +83,6 @@ namespace InteractDB {
 		db.Sort(predic);
 	}
 
-	//Диалог восстановления базы данных из предыдущего сохранения, файла с именем
-	//database_dump_namefile. Вызываем RestoreDbWith<Food>()
-	template <class InteractType, class ItemType>
-	Database<ItemType> RestoreDbWith(fs::path database_dump_namefile) {		
-		cout << "Do you want to restore data from the last save?\n"
-			    "\'Y\' - yes, \'N\' - no\n"
-			    "Enter: ";
-		char choice;
-		cin >> choice;
-		system("CLS");
-		
-		Database<ItemType> rs_db;
-		if (choice == 'Y') {
-			try {
-				FileIO file(database_dump_namefile);
-				rs_db = file.ReadBinary(rs_db, database_dump_namefile);
-			}
-			catch (domain_error e) {
-				cout << e.what() << endl;
-				return RestoreDbWith<InteractType, ItemType>();
-			}
-		}
-		else if (choice == 'N') {
-			return Database<ItemType>();
-		}
-		else {
-			ClearCin(cin);
-			cout << "Incorrect input, try again!\n";
-			return RestoreDbWith<InteractType, ItemType>();
-		}
-
-		return rs_db;
-	}
-
 	template <class InteractType, class ItemType>
 	Database<ItemType> RestoreDb(fs::path database_dump_namefile)
 	{
@@ -141,21 +107,21 @@ namespace InteractDB {
 							   
 	}
 	template <class InteractType, class ItemType>
-	Database<ItemType> ChooseFirstFile(PathIO &pathes){
+	Database<ItemType> ChooseFirstFile(PathIO& pathes){
 		Database<ItemType> rs_db;
 		if (pathes.Size() != 0)
 		{
-			cout << "Choose file to restore\n:";
-		    cout << "0 - Get Last Save\n";
+			cout << "Choose file to restore:\n";
+		    cout << "0 - Get last save\n";
 			pathes.ListPathes();
-			cout << pathes.Size() + 1 << "- CreateFile\n";
-			cout << "Enter your choice: ";
-			int n;
+			cout << pathes.Size() + 1 << " - Don't restore, create new file\n";
+			cout << "Enter the number: ";
+			unsigned int n;
 			n = CorrectInput::EnterIntNum();
 			if (n == 0)
 			{
 				pathes.SetCurrentFile(pathes.GetLast());
-				return RestoreDb<InteractType, ItemType>(pathes.GetLast());
+				return RestoreDb<InteractType, ItemType>(pathes.GetCurrentFile());
 			}
 			else if (n == pathes.Size() + 1)
 			{
@@ -164,15 +130,15 @@ namespace InteractDB {
 			}
 			else if (n < pathes.Size() + 1)
 			{
-				pathes.SetCurrentFile (pathes[n - 1]);
-				return RestoreDb<InteractType, ItemType>(pathes[n - 1]);
+				pathes.SetCurrentFile(pathes[n - 1]);
+				return RestoreDb<InteractType, ItemType>(pathes.GetCurrentFile());
 			}
 			else
 				 ChooseFirstFile<InteractType,ItemType>(pathes);		
 		}
 		else
 		{
-			pathes.SetCurrentFile ("");
+			pathes.SetCurrentFile("");
 			return  rs_db;
 		}
 	}
@@ -180,11 +146,11 @@ namespace InteractDB {
 	template <class InteractType, class ItemType>
 	Database<ItemType> ChooseFile(PathIO &pathes, Database<ItemType> db) {
 		Database<ItemType> rs_db;		
-			cout << "Choose file to restore\n:";
-				cout << "0 - GO back\n";
+			cout << "Choose file to restore:\n";
+				cout << "0 - Return to the menu\n";
 			pathes.ListPathes();
-			cout << pathes.Size() + 1 << "- CreateFile\n";
-			cout << "Enter your choice: ";
+			cout << pathes.Size() + 1 << " - Create new file\n";
+			cout << "Enter the number: ";
 			int n;
 			n = CorrectInput::EnterIntNum();
 			if (n == 0)
@@ -223,6 +189,8 @@ namespace InteractDB {
 			}
 			else
 				pat=CreateFile<InteractType>(db,pat);
+
+			
 		}
 		else if (choice == 'N') {
 			return pat;
@@ -298,11 +266,19 @@ namespace InteractDB {
 
 		//Обработаем Header, получим кол-во полей и их длины
 		int i = 0;
-		int NumOfFields = 1;
+		int beg = 0;
+		//int NumOfFields = 1;
+		vector<string> HeaderFields;
 		while (Header[i] != '\n') {
-			if (Header[i] == '|') ++NumOfFields;
+			if (Header[i] == '|') {
+				//++NumOfFields;
+				string Field = assign(Header, beg, i - beg);
+				HeaderFields.push_back(Field);
+				beg = i + 1;
+			}
 			++i;
 		}
+		int NumOfFields = HeaderFields.size();
 		cout << "Number of fields = " << NumOfFields << '\n';
 		
 

@@ -24,8 +24,8 @@ using namespace std;
 
 char ChooseFirstAction(PathIO pat) {
 	system("CLS");
-	cout << "CurrentFile:"<<
-		pat.GetCurrentFile().string()<<"\n"<<
+	cout << "Current file: " <<
+		(pat.GetCurrentFile() == "" ? "*unbonded*" : pat.GetCurrentFile().filename()) << "\n" <<
 		"Choose an action:\n" <<
 		"1)Add new element\n" <<
 		"2)Print database\n" <<
@@ -56,7 +56,7 @@ istream& WaitEnter(istream& in, ostream& out) {
 
 int main() {
 	//Восстановление базы данных с файла
-	Database<Type> db;
+	Database<shared_ptr<Type>> db;
 	PathIO FilePathes;
 	FilePathes.CreateVector<InterType>();
 	db = InteractDB::ChooseFirstFile<InterType,shared_ptr<Type> >(FilePathes);	
@@ -91,12 +91,13 @@ int main() {
 					cout << "Filtered Elements:\n";
 					//Do you want to save...
 					InteractDB::PrintTable<InterType>(new_db);
-					cout << "Do you want to save...\n"
-						"Y-YES,another sym NO";
-					char chs;
-					cin >> chs;
-					if (chs == 'Y' || chs == 'y')
-						InteractDB::CreateFile<InterType>(new_db, FilePathes);											   						 					  			
+					cout << "Do you want to create new file?\n"
+						"\'Y\' - yes, another symbol - no\n"
+						"Enter: ";
+					char choice;
+					cin >> choice;
+					if (choice == 'Y') 
+					InteractDB::CreateFile<InterType>(new_db, FilePathes);					
 				}
 			}
 			else
@@ -115,11 +116,10 @@ int main() {
 			WaitEnter(cin, cout);
 		}
 		else if (act == '6') {		
-			if (!db.Empty()) {
-				cout << "Do you want to save current File";
+			if (!db.Empty())
 				FilePathes=InteractDB::SaveData<InterType>(db, FilePathes);
-			}
-			db=InteractDB::ChooseFile<InterType>(FilePathes,db);
+			
+			db = InteractDB::ChooseFile<InterType>(FilePathes,db);
 			
 		}
 
