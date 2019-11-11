@@ -281,8 +281,47 @@ namespace InteractDB {
 			InteractType::OutputData(db[i]);
 	}
 
+	//Функция получает базу данных и выводит её в виде КРАСИВОЙ таблицы - IN PROCESS
+	template <class InteractType, class ItemType>
+	void NewPrintTable(Database<ItemType>& db) {
+
+		//PUT IT AWAY (later)
+		PrintTable<InteractType>(db);
+
+		if (db.Empty()) {
+			std::cout << "There's nothing to show!\n";
+			return;
+		}
+
+		string Header = InteractType::GetTableHeader();
+
+		//Обработаем Header, получим кол-во полей и их длины
+		int i = 0;
+		int NumOfFields = 1;
+		while (Header[i] != '\n') {
+			if (Header[i] == '|') ++NumOfFields;
+			++i;
+		}
+		cout << "Number of fields = " << NumOfFields << '\n';
+		
+
+
+		/*
+		int ibeg = 0;
+		int i = 0;
+		while (TableHeader[i] != '\n') {
+			while (TableHeader[i] != '\n' && TableHeader[i] != ' ') {
+				++i;
+			}
+			if (TableHeader[i] == '\n') break;
+			//Length = a;
+			++i;
+		}
+		*/
+
+		//for (int i = 0; i < TableHeader.Size
+		InteractType::PrintColumnNames();
+		for (int i = 0; i < db.Size(); ++i)
+			InteractType::OutputData(db[i]);
+	}
 };
-
-
-
-

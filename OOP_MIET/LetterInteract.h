@@ -75,6 +75,11 @@ public:
 		std::cout << "Index\t" << "Rec. Adress\t" << "Rec. Name\t" << "Sen. Adress\t" << "Sen. Name\t" << "Cost\n";
 	}
 
+	static string GetTableHeader()
+	{
+		return "Index|Rec. Adress|Rec. Name|Sen. Adress|Sen. Name|Cost\n"
+	}
+
 	static string GetFolderName()
 	{
 		return "Letter";
