@@ -52,8 +52,9 @@ void ClearCin(std::istream& in) {
 		//из этого объекта
 		template <class T>
 		void WriteBinary(T obj, const std::string& file) {
-			if (!FileExist(file)) 
-				throw std::domain_error("File with " + file + " name doesn't exist. We've created it and saved data.");
+			if (!FileExist(file))
+				//throw std::domain_error("File with " + file + " name doesn't exist. We've created it and saved data.");
+				Create(file);
 			
 
 			filename = file;
