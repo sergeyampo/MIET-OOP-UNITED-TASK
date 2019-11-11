@@ -256,6 +256,7 @@ namespace InteractDB {
 
 		//PUT IT AWAY (later)
 		PrintTable<InteractType>(db);
+		std::cout << "\n\n\n";
 
 		if (db.Empty()) {
 			std::cout << "There's nothing to show!\n";
@@ -268,17 +269,18 @@ namespace InteractDB {
 		int i = 0;
 		int beg = 0;
 		//int NumOfFields = 1;
-		vector<string> HeaderFields;
+		vector<string> ColumnNames;
 		while (Header[i] != '\n') {
-			if (Header[i] == '|') {
+			if (Header[i] == '|' || Header[i] == '\n') {
 				//++NumOfFields;
-				string Field = assign(Header, beg, i - beg);
-				HeaderFields.push_back(Field);
+				string Field;
+				Field.assign(Header, beg, i - beg);
+				ColumnNames.push_back(Field);
 				beg = i + 1;
 			}
 			++i;
 		}
-		int NumOfFields = HeaderFields.size();
+		int NumOfFields = ColumnNames.size();
 		cout << "Number of fields = " << NumOfFields << '\n';
 		
 

@@ -14,8 +14,8 @@ public:
 	//Общая функция ввода всех полей
 	static shared_ptr<Letter> InputData() {
 		std::cout << "Which type of letter you want to create:\n"
-			      << "1)Letter with weight but no cost.\n"
-		          << "2)Letter without weight but with cost.\n"
+			      << "1)Letter with cost.\n"
+		          << "2)Letter with weight.\n"
 				  << "Enter a number: ";
 		char choice;
 		cin >> choice;
