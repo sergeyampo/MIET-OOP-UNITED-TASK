@@ -47,49 +47,6 @@ public:
 		for (auto& p : fs::directory_iterator(curr_path))
 			ps.push_back(p.path());		
 	}
-
-	template <class InteractType>
-	fs::path ChooseFirst()	{ 		
-		//Вынести функционал вывода файлов в приватный метод ListFiles(...), тогда
-		//в Choose() и ChooseFirst() останутся действия по вводу данных и доп. функционалу.
-		//Цель - избавиться от дублирования кода и вынести общий функционал в отдельные функции.
-	    //Если папка пуста, то скип, иначе выполняем функцию
-		//Не создавать пустой файл!
-		//Вынести общение с пользователем в другую функцию
-		cout << "Choose file to restore\n:";
-		cout << "0 - Get Last Save\n";
-		for (int i = 0; i < ps.size(); i++)
-			cout << i+1<<" - " << ps[i].filename() << "\n";		
-		cout << ps.size()+1 << "- CreateFile\n";
-		cout << "Enter your choice: ";
-		int n;
-		cin >> n;		
-		if (n == 0)
-		  return GetLast();
-		if (n == ps.size() + 1)
-			"";
-		else
-			return ps[n - 1];
-	}
-	fs::path Choose(fs::path pat)	{		
-		cout << "0-GoBack\n";
-		for (int i = 0; i < ps.size(); i++)
-		{
-			cout << "1-" << ps[i].filename() << "\n";
-		}
-		cout << ps.size() << "-CreateFile\n";
-		cout << "enter your choise";
-		int n;
-		cin >> n;
-		if (n == 0) {
-			return  pat;
-		}
-		else if (n == ps.size()+1) {
-			return "";
-		}
-		else
-			return ps[n - 1];
-	}
 	
 	void ListPathes()
 	{
@@ -109,7 +66,7 @@ public:
 		for (auto p : ps)
 			if (p == pat){
 				key = false;
-				cout << "FIle with that name exist...Try again\n";
+				cout << "File with " << p.filename() << " name exist... Try again\n";
 				break;
 		    }
 		return key;
@@ -117,11 +74,13 @@ public:
 	fs::path CreateFileName()
 	{
 		fs::path current_file = Getcurrent();
-		cout << "Enter FileName(ONLYSTRING)";
+		cout << "Enter name of file: ";
 		string buffer = CorrectInput::EnterSym();
+		buffer += ".cereal";
 		current_file /= buffer;
 		if (!SamePath(current_file))
-			CreateFileName();
+			CreateFileName();	
+		currentFile = current_file;
 		return current_file;
 	}
 	void SetCurrentFile(fs::path pat)
