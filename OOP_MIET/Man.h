@@ -29,6 +29,7 @@ class Man {
 
 	std::ostream& Write(std::ostream& out) {
 		out << name << "\t" << address;
+		return out;
 	}
 
   private:

@@ -4,6 +4,8 @@
 #include "cereal/types/string.hpp"
 #include "cereal/types/array.hpp"
 #include "cereal/types/base_class.hpp"
+#include "cereal/types/polymorphic.hpp"
+#include "Letter.h"
 
 #include <fstream>
 #include <iostream>
@@ -85,3 +87,6 @@ void ClearCin(std::istream& in) {
 		std::string filename;
 
 	};
+
+	CEREAL_REGISTER_TYPE(Letter1);
+	CEREAL_REGISTER_TYPE(Letter2);

@@ -15,6 +15,7 @@ namespace InteractDB {
 	void AddElement(Database<ItemType>& db) {
 		//cout something
 		ItemType item = InteractType::InputData();
+		
 		db.Add(item);
 	}
 
@@ -56,7 +57,7 @@ namespace InteractDB {
 	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
-		if (found.Empty())
+		if (found->Empty())
 			cout << "Element not found!\n";
 
 		return found;
