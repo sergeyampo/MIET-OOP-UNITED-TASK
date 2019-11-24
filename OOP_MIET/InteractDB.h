@@ -1,38 +1,47 @@
-#pragma once
+п»ї#pragma once
 #include "Database.h"
 #include "CorrectInput.h"
+#include "LetterInteract.h"
 #include <iostream>
+#include"Pathes.h"
+#include "FileIO.h"
 
-//Универсальный интерфейс работы с базой данных
+//РЈРЅРёРІРµСЂСЃР°Р»СЊРЅС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…
 namespace InteractDB {
-	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
-	//функциями. Добавляет элемент в базу данных.
-	//Вызываем как InteractDB::AddElement<FoodInteract>(db);
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё С‚РѕС‡РЅС‹Р№ С€Р°Р±Р»РѕРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЃ СѓС‚РѕС‡РЅС‘РЅРЅС‹РјРё РґРёР°Р»РѕРіРѕРІС‹РјРё
+	//С„СѓРЅРєС†РёСЏРјРё. Р”РѕР±Р°РІР»СЏРµС‚ СЌР»РµРјРµРЅС‚ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….
+	//Р’С‹Р·С‹РІР°РµРј РєР°Рє InteractDB::AddElement<FoodInteract>(db);
 	template <class InteractType, class ItemType>
-	static void AddElement(Database<ItemType>& db) {
-	    //cout something
+	void AddElement(Database<ItemType>& db) {
+		//cout something
 		ItemType item = InteractType::InputData();
+		
 		db.Add(item);
 	}
 
-	//Функция получает базу данных и точный шаблонный параметр с уточнёнными диалоговыми
-	//функциями. Добавляет несколько элементов в базу данных. 
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё С‚РѕС‡РЅС‹Р№ С€Р°Р±Р»РѕРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЃ СѓС‚РѕС‡РЅС‘РЅРЅС‹РјРё РґРёР°Р»РѕРіРѕРІС‹РјРё
+	//С„СѓРЅРєС†РёСЏРјРё. Р”РѕР±Р°РІР»СЏРµС‚ РЅРµСЃРєРѕР»СЊРєРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…. 
 	template <class InteractType, class ItemType>
-	static void AddFewElements(Database<ItemType>& db) {
+	void AddFewElements(Database<ItemType>& db) {
 		unsigned int count = 0;
 		cout << "Enter amount of elements, which you want to create\n"
-			"or type 0 if you don't: ";
-		int amount = CorrectInput::CorrectInput::EnterIntNum();
+			"or type 0 if you don't:\n" <<
+			"Enter: ";
+		int amount = CorrectInput::EnterIntNum();
+		system("CLS");
+		ClearCin(cin);
 
-		for (int i = 0; i < amount; i++)
+		for (int i = 0; i < amount; ++i){
+			std::cout << "Enter " << i + 1 << " element: " << "\n";
 			AddElement<InteractType>(db);
+		}
 	}
 
-	//Функция получает через явные шаблонные аргументы класс взаимодействия b тип хранимый в базе данных
-	//Диалог создания базы данных.
-	//Вызываем как CreateDatabaseWith<FoodInteract, Food>()
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ С‡РµСЂРµР· СЏРІРЅС‹Рµ С€Р°Р±Р»РѕРЅРЅС‹Рµ Р°СЂРіСѓРјРµРЅС‚С‹ РєР»Р°СЃСЃ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ b С‚РёРї С…СЂР°РЅРёРјС‹Р№ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
+	//Р”РёР°Р»РѕРі СЃРѕР·РґР°РЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С….
+	//Р’С‹Р·С‹РІР°РµРј РєР°Рє CreateDatabaseWith<FoodInteract, Food>()
 	template <class InteractType, class ItemType>
-	static Database<ItemType> CreateDatabaseWith() {
+	Database<ItemType> CreateDatabaseWith() {
 		cout << "Enter the size of DataBase: ";
 		int k = 0;
 		k = CorrectInput::EnterIntNum();
@@ -43,129 +52,277 @@ namespace InteractDB {
 		return db;
 	}
 
-	//Диалог поиска элементов
+	//Р”РёР°Р»РѕРі РїРѕРёСЃРєР° СЌР»РµРјРµРЅС‚РѕРІ
 	template <class InteractType, class ItemType>
-	static ItemType FindElement(Database<ItemType>& db) {
+	ItemType FindElement(Database<ItemType>& db) {
 		auto predic = InteractType::GetFindCritery();
 		ItemType found = db.Find(predic);
-		if (found.empty())
-			cout << "Element not found!" << endl;
+		if (found->Empty())
+			cout << "Element not found!\n";
 
 		return found;
 	}
+	
 
-	//Диалог фильтра элементов - возвращаемый базу данных элементы которых
-	//удовлетворяют предикату InteractType::GetFilterCritery.
+	//Р”РёР°Р»РѕРі С„РёР»СЊС‚СЂР° СЌР»РµРјРµРЅС‚РѕРІ - РІРѕР·РІСЂР°С‰Р°РµРјС‹Р№ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… СЌР»РµРјРµРЅС‚С‹ РєРѕС‚РѕСЂС‹С…
+	//СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ РїСЂРµРґРёРєР°С‚Сѓ InteractType::GetFilterCritery.
 	template <class InteractType, class ItemType>
-	static Database<ItemType> FilterElements(const Database<ItemType>& db) {
+	Database<ItemType> FilterElements(Database<ItemType>& db) {
 		auto predic = InteractType::GetFilterCritery();
 		Database<ItemType> new_db = db.Filter(predic);
+		if(new_db.Empty())
+			cout << "There's nothing to filter!\n";
 
 		return new_db;
 	}
 
-	//Диалог сортировки элементов, меняет порядок элементов переданной базы данных.
+	//Р”РёР°Р»РѕРі СЃРѕСЂС‚РёСЂРѕРІРєРё СЌР»РµРјРµРЅС‚РѕРІ, РјРµРЅСЏРµС‚ РїРѕСЂСЏРґРѕРє СЌР»РµРјРµРЅС‚РѕРІ РїРµСЂРµРґР°РЅРЅРѕР№ Р±Р°Р·С‹ РґР°РЅРЅС‹С….
 	template <class InteractType, class ItemType>
-	static void SortElements(Database<ItemType>& db) {
-		auto predic = FoodInteract::GetSortCritery();
+	void SortElements(Database<ItemType>& db) {
+		auto predic = InteractType::GetSortCritery();
 		db.Sort(predic);
 	}
-};
 
+	//Р”РёР°Р»РѕРі РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РёР· РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ, С„Р°Р№Р»Р° СЃ РёРјРµРЅРµРј
+	//database_dump_namefile. Р’С‹Р·С‹РІР°РµРј RestoreDbWith<Food>()
+	template <class InteractType, class ItemType>
+	Database<ItemType> RestoreDbWith(fs::path database_dump_namefile) {		
+		cout << "Do you want to restore data from the last save?\n"
+			    "\'Y\' - yes, \'N\' - no\n"
+			    "Enter: ";
+		char choice;
+		cin >> choice;
+		system("CLS");
+		
+		Database<ItemType> rs_db;
+		if (choice == 'Y') {
+			try {
+				FileIO file(database_dump_namefile);
+				rs_db = file.ReadBinary(rs_db, database_dump_namefile);
+			}
+			catch (domain_error e) {
+				cout << e.what() << endl;
+				return RestoreDbWith<InteractType, ItemType>();
+			}
+		}
+		else if (choice == 'N') {
+			return Database<ItemType>();
+		}
+		else {
+			ClearCin(cin);
+			cout << "Incorrect input, try again!\n";
+			return RestoreDbWith<InteractType, ItemType>();
+		}
 
-//Пользовательский класс взаимодействий и диалогов
-class FoodInteract {
-public:
-	FoodInteract() = delete;
-	~FoodInteract() = delete;
-
-	//Общая функция ввода всех полей
-
-	static Food InputData() {
-		Food Buffer;
-		cout << "enter fam" << endl;
-		Buffer.fam = CorrectInput::EnterSym();
-		cout << "enter type" << endl;
-		Buffer.type = CorrectInput::EnterIntNum();
-		cout << "enter wight" << endl;
-		Buffer.weight = CorrectInput::EnterDoubleNum();
-		cout << "enter count" << endl;
-		Buffer.count = CorrectInput::EnterIntNum();
-		cout << "enter cost" << endl;
-		Buffer.cost = CorrectInput::EnterDoubleNum();
-		return Buffer;
-		//Вызываем InputIndex(), InputRecAdress() ...
-		//Если вернули false значит всё плохо вызываем их ещё раз
-		//Чистим поток и говорим пользователю ввести ещё раз
-
+		return rs_db;
 	}
 
-
-	static auto GetFindCritery() {
-
-		string buffer = CorrectInput::EnterSym();
-		return [buffer](Food m) { return m.fam == buffer; };
-
-		//если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFindCritery();
+	template <class InteractType, class ItemType>
+	Database<ItemType> RestoreDb(fs::path database_dump_namefile)
+	{
+		Database<ItemType> rs_db;
+		if (database_dump_namefile != "")
+		{
+			FileIO file(database_dump_namefile.string());
+			rs_db = file.ReadBinary(rs_db, database_dump_namefile.string());
+		}
+		return rs_db;
 	}
-
-
-	static auto GetFilterCritery() {
-
-		unsigned int buffer = CorrectInput::EnterIntNum();
-		return [buffer](Food m) { return m.type == buffer; };
-
-		//Просим выбрать критерий фильтра и возвращаем
-		//лямбда функцию - предикат.
-		//"Выберите как вы хотите фильтровать, по имени
-		//По индексу"
-		//Если например по имени делаем
-	   //return [](Food m) { return m.name == "введённое имя пользователем" };
-	   //если по индексу то return [](Food m) { return m.index == введённый индекс пользователем };
-	   //Если вернули всё плохо и пользователь не смог выбрать между 1 и 2 нажав 15
-	   //Чистим поток и говорим пользователю ввести ещё раз
-	   //То есть вызываем саму себя return GetFilterCritery();
-	   //Всё аналогично
+	//РЎРћР—Р”РђРќРР• Р¤РђР™Р›Рђ
+	
+	template <class InteractType, class ItemType>
+	PathIO CreateFile(const Database<ItemType>& db, PathIO &pathes) //РїСЂРёРЅРёРјР°РµС‚ PathIO
+	{		
+		fs::path current_file = pathes.CreateFileName();
+			FileIO file(current_file.string());
+			file.WriteBinary(db, current_file.string());
+			pathes.AddPath(current_file);
+			return pathes;
+							   
 	}
-	template <class Func>
-	static void GetSortCritery() {
-		cout << "enter critery of search:" << endl << "1-fam" << endl << "2-type" << endl << "3-wight" << endl << "4-count" << endl << "5-cost" << endl;
-		unsigned int k = 0;
-		cin >> k;
-		if (k == 1)
+	template <class InteractType, class ItemType>
+	Database<ItemType> ChooseFirstFile(PathIO &pathes){
+		Database<ItemType> rs_db;
+		if (pathes.Size() != 0)
 		{
-			string buffer = CorrectInput::EnterSym();
-			return [buffer](Food m, Food n) { return m.fam < n.fam; };
-		}
-		if (k == 2)
-		{
-			unsigned int buffer = CorrectInput::EnterIntNum();
-			return [buffer](Food m, Food n) { return m.type < n.type; };
-		}
-		if (k == 3)
-		{
-			double buffer = CorrectInput::EnterDoubleNum();
-			return [buffer](Food m, Food n) { return m.wight < n.wight; };
-		}
-		if (k == 4)
-		{
-			double buffer = CorrectInput::EnterIntNum();
-			return [buffer](Food m, Food n) { return m.count < n.wight; };
-		}
-		if (k == 5)
-		{
-			double buffer = CorrectInput::EnterDoubleNum();
-			return [buffer](Food m, Food n) { return m.cost < n.cost; };
+			cout << "Choose file to restore\n:";
+		    cout << "0 - Get Last Save\n";
+			pathes.ListPathes();
+			cout << pathes.Size() + 1 << "- CreateFile\n";
+			cout << "Enter your choice: ";
+			int n;
+			n = CorrectInput::EnterIntNum();
+			if (n == 0)
+			{
+				pathes.SetCurrentFile(pathes.GetLast());
+				return RestoreDb<InteractType, ItemType>(pathes.GetLast());
+			}
+			else if (n == pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile("");
+				return  rs_db;
+			}
+			else if (n < pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile (pathes[n - 1]);
+				return RestoreDb<InteractType, ItemType>(pathes[n - 1]);
+			}
+			else
+				 ChooseFirstFile<InteractType,ItemType>(pathes);		
 		}
 		else
 		{
-			GetSortCritery();
+			pathes.SetCurrentFile ("");
+			return  rs_db;
 		}
+	}
+
+	template <class InteractType, class ItemType>
+	Database<ItemType> ChooseFile(PathIO &pathes, Database<ItemType> db) {
+		Database<ItemType> rs_db;		
+			cout << "Choose file to restore\n:";
+				cout << "0 - GO back\n";
+			pathes.ListPathes();
+			cout << pathes.Size() + 1 << "- CreateFile\n";
+			cout << "Enter your choice: ";
+			int n;
+			n = CorrectInput::EnterIntNum();
+			if (n == 0)
+			{
+				return db;
+			}
+			else if (n == pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile("");
+				return rs_db;
+			}
+			else if (n < pathes.Size() + 1)
+			{
+				pathes.SetCurrentFile (pathes[n - 1]);
+				return RestoreDb<InteractType, ItemType>(pathes[n - 1]);
+			}
+			else			
+			ChooseFile<InteractType>(pathes, db);		
 
 	}
 
-};
+	//СЃРѕС…СЂР°РЅРµРЅРёРµ Р±Рґ РІ С„Р°Р№Р»
+	template <class InteractType, class ItemType>
+	PathIO SaveData(const Database<ItemType>& db,PathIO& pat)
+	{
+		cout << "Do you want to save data to file?\n"
+			"\'Y\' - yes, \'N\' - no\n"
+			"Enter: ";
+		char choice;
+		cin >> choice;
+		if (choice == 'Y') {
+			if (pat.GetCurrentFile() != "")
+			{
+				FileIO file(pat.GetCurrentFile().string());
+				file.WriteBinary(db,pat.GetCurrentFile().string());
+			}
+			else
+				pat=CreateFile<InteractType>(db,pat);
+		}
+		else if (choice == 'N') {
+			return pat;
+		}
+		else {
+			ClearCin(cin);
+			cout << "Incorrect input, try again!\n";
+			return SaveData<InteractType>(db, pat);
+		}
+		return pat;
+	}
 
+	
+	//Р”РёР°Р»РѕРі СЃРѕС…СЂР°РЅРµРЅРёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РІ С„Р°Р№Р» СЃ РёРјРµРЅРµРј
+	//database_dump_namefile.
+	template <class InteractType, class ItemType>
+	void SaveDb(const Database<ItemType>& db ,fs::path database_dump_namefile) {
+		cout << "Do you want to save data to file?\n"
+			"\'Y\' - yes, \'N\' - no\n"
+			"Enter: ";
+		char choice;
+		cin >> choice;
+
+		if (choice == 'Y') {
+			try {
+				FileIO file(database_dump_namefile);
+				file.WriteBinary(db, database_dump_namefile);
+				//std::cout << "The " + database_dump_namefile + " file was successfully saved.\n";
+			}
+			catch (domain_error e) {
+				FileIO file(database_dump_namefile);
+				file.Create(database_dump_namefile);
+				file.WriteBinary(db, database_dump_namefile);
+				cout << e.what() << endl;
+				return;
+			}
+		}
+		else if (choice == 'N') {
+			return;
+		}
+		else {
+			ClearCin(cin);
+			cout << "Incorrect input, try again!\n";
+			return SaveDb<InteractType>(db);
+		}
+	}
+
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё РІС‹РІРѕРґРёС‚ РµС‘ РІ РІРёРґРµ С‚Р°Р±Р»РёС†С‹
+	template <class InteractType, class ItemType>
+	void PrintTable(Database<ItemType>& db) {
+		if (db.Empty()) {
+			std::cout << "There's nothing to show!\n";
+			return;
+		}
+		InteractType::PrintColumnNames();
+		for (int i = 0; i < db.Size(); ++i)
+			InteractType::OutputData(db[i]);
+	}
+
+	//Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡Р°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… Рё РІС‹РІРѕРґРёС‚ РµС‘ РІ РІРёРґРµ РљР РђРЎРР’РћР™ С‚Р°Р±Р»РёС†С‹ - IN PROCESS
+	template <class InteractType, class ItemType>
+	void NewPrintTable(Database<ItemType>& db) {
+
+		//PUT IT AWAY (later)
+		PrintTable<InteractType>(db);
+
+		if (db.Empty()) {
+			std::cout << "There's nothing to show!\n";
+			return;
+		}
+
+		string Header = InteractType::GetTableHeader();
+
+		//РћР±СЂР°Р±РѕС‚Р°РµРј Header, РїРѕР»СѓС‡РёРј РєРѕР»-РІРѕ РїРѕР»РµР№ Рё РёС… РґР»РёРЅС‹
+		int i = 0;
+		int NumOfFields = 1;
+		while (Header[i] != '\n') {
+			if (Header[i] == '|') ++NumOfFields;
+			++i;
+		}
+		cout << "Number of fields = " << NumOfFields << '\n';
+		
+
+
+		/*
+		int ibeg = 0;
+		int i = 0;
+		while (TableHeader[i] != '\n') {
+			while (TableHeader[i] != '\n' && TableHeader[i] != ' ') {
+				++i;
+			}
+			if (TableHeader[i] == '\n') break;
+			//Length = a;
+			++i;
+		}
+		*/
+
+		//for (int i = 0; i < TableHeader.Size
+		InteractType::PrintColumnNames();
+		for (int i = 0; i < db.Size(); ++i)
+			InteractType::OutputData(db[i]);
+	}
+};

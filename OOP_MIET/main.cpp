@@ -1,52 +1,137 @@
-#include "Database.h"
-#include "Mail.h"
+п»ї#include "Database.h"
+#include "Letter.h"
 #include "Food.h"
 #include "FileIO.h"
 #include "InteractDB.h"
+#include "FoodInteract.h"
+#include "LetterInteract.h"
+#include "StudentInteract.h"
+#include "InteractDB.h"
+#include "Pathes.h"
 
-#include <iostream>
-#include <vector>
 #include <string>
+#include <iostream>
 #include <fstream>
+#include <stdlib.h>
+#include <chrono>
+#include <thread>
+#include <memory>
+
+#define InterType LetterInteract	
+#define Type Letter
 
 using namespace std;
 
+char ChooseFirstAction(PathIO pat) {
+	system("CLS");
+	cout << "CurrentFile:"<<
+		pat.GetCurrentFile().string()<<"\n"<<
+		"Choose an action:\n" <<
+		"1)Add new element\n" <<
+		"2)Print database\n" <<
+		"3)Searching\n" <<
+		"4)Filter\n" <<
+		"5)Sort\n"<<
+		"6)Choose another File\n" <<
+		"7)Exit\n"<<
+		"Enter number: ";
+	char choice;
+	cin >> choice;
+	system("CLS");
+
+	if (choice == '1' || choice == '2' || choice == '3' || choice == '4' || choice == '5' || choice == '6'||choice=='7') return choice;
+	else { ClearCin(cin); return ChooseFirstAction(pat); }
+
+	return '0';
+}
+
+//Р¤СѓРЅРєС†РёСЏ РѕР¶РёРґР°РµС‚ РЅР°Р¶Р°С‚РёСЏ РћРє
+istream& WaitEnter(istream& in, ostream& out) {
+	out << "Press the enter to continue...";
+	ClearCin(in);
+	in.get();
+
+	return in;
+}
+
 int main() {
-	//Примеры
-	Database<Mail> db;
-	string s = "Sasha";
-	Mail m(675000, "s", "s", "s", "s", float(12.55));
-	db.Add(m);
+	//Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… СЃ С„Р°Р№Р»Р°
+	Database<Type> db;
+	PathIO FilePathes;
+	FilePathes.CreateVector<InterType>();
+	db = InteractDB::ChooseFirstFile<InterType,shared_ptr<Type> >(FilePathes);	
 
-	//Заполним отличающимеся по цене
-	for (unsigned i = 1; i < 20; ++i)
-		db.Add({ 6750000, "a", "b", "c", "d", float(12.5 + i) });
+	//Р¦РёРєР»РёС‡РµСЃРєРёР№ Р·Р°РїСЂРѕСЃ РґРµР№СЃС‚Р°РёСЏ
+	bool is_over = false;
+	do {
+		
+		char act = ChooseFirstAction(FilePathes);
+		if (act == '1') {
+			InteractDB::AddFewElements<InterType>(db);
+		}
+		else if (act == '2') {
+			InteractDB::PrintTable<InterType>(db);
+			WaitEnter(cin, cout);
+		}
+		else if (act == '3') {
+			if (!db.Empty()) {
+				if (auto found_el = InteractDB::FindElement<InterType>(db); !found_el->Empty()) {
+					cout << "Found element:\n";
+					InterType::OutputData(found_el);
+				}
+			}
+			else
+				cout << "There's nothing to find!\n";
 
-	cout << "Common list:\n";
-	//Выведем цены
-	for (size_t i = 0; i < db.Size(); ++i)
-		cout << db[i].cost << "\n";
+			WaitEnter(cin, cout);
+		}
+		else if (act == '4') {
+			if (!db.Empty()) {
+				if (auto new_db = InteractDB::FilterElements<InterType>(db); !new_db.Empty()) {
+					cout << "Filtered Elements:\n";
+					//Do you want to save...
+					InteractDB::PrintTable<InterType>(new_db);
+					cout << "Do you want to save...\n"
+						"Y-YES,another sym NO";
+					char chs;
+					cin >> chs;
+					if (chs == 'Y' || chs == 'y')
+						InteractDB::CreateFile<InterType>(new_db, FilePathes);											   						 					  			
+				}
+			}
+			else
+				cout << "There's nothing to find!\n";
 
-	//Поищем с указанным индексом 675000
-	Mail found = db.Find([](Mail m) { return m.index == 675000; });
-	//[](Mail m) { return m.index == 675000; } значит что мы делаем лямбда функцию
-	//m - элемент базы данных, когда условия описанные в { } - теле функции выполняться
-	//функция Find вернет этот m элемент он и присвоится found.
+			WaitEnter(cin, cout);
+		}
+		else if (act == '5') {
+			if (!db.Empty()) {
+				InteractDB::SortElements<InterType>(db);
+				cout << "Sorted Elements:\n";
+				InteractDB::PrintTable<InterType>(db);
+			}
+			else
+				cout << "There's nothing to sort!\n";
+			WaitEnter(cin, cout);
+		}
+		else if (act == '6') {		
+			if (!db.Empty()) {
+				cout << "Do you want to save current File";
+				FilePathes=InteractDB::SaveData<InterType>(db, FilePathes);
+			}
+			db=InteractDB::ChooseFile<InterType>(FilePathes,db);
+			
+		}
 
-	cout << "Price greater than 20:\n";
-	//Пофильтруем по цене выше 20
-	auto new_db = db.Filter([](Mail m) { return m.cost > 20; });
-
-	//Выведем цены
-	for (size_t i = 0; i < new_db.Size(); ++i)
-		cout << new_db[i].cost << "\n";
-
-	FileIO files("Database.dat");
-	
-
-	//Работа с InteractDB
-	Database<Food> database = InteractDB::CreateDatabaseWith<FoodInteract, Food>();
-	Food f = InteractDB::FindElement<FoodInteract>(database);
+		else if(act == '7'){
+			if(!db.Empty())
+			  InteractDB::SaveData<InterType>(db, FilePathes);
+			
+			is_over = true;
+			cout << "Waiting for closing...";
+			this_thread::sleep_until(chrono::system_clock::now() + 2.5s);
+		}
+	} while (!is_over);
 
 	return 0;
 }
